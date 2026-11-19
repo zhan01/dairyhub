@@ -88,6 +88,7 @@ export interface StorePlan {
   elapsed: number;
   days: number;
   excused: number;
+  overridden?: boolean;
 }
 /** Realistic plan = avg monthly sales (last 84 days) × seasonality × category potential. */
 export function storePlan(ws: Workspace, store: Store, todayStr: string): StorePlan {
@@ -95,7 +96,8 @@ export function storePlan(ws: Workspace, store: Store, todayStr: string): StoreP
   const rev = storeRevenue(ws, store.id);
   const hist = sumRange(rev, T - 84, T - 1);
   const avgMonthly = (hist / 84) * 30;
-  const realistic = avgMonthly * ws.settings.seasonality * CATEGORY_COEF[store.category];
+  const override = ws.planOverrides?.[store.id];
+  const realistic = override ? override.value : avgMonthly * ws.settings.seasonality * CATEGORY_COEF[store.category];
   const topDown = avgMonthly * ws.settings.topDownPlanFactor;
   const ms = monthStart(todayStr);
   const msIdx = dayIndex(ws, ms);
@@ -104,7 +106,7 @@ export function storePlan(ws: Workspace, store: Store, todayStr: string): StoreP
   const days = daysInMonth(todayStr);
   const forecast = (sumRange(rev, msIdx, T - 1) / elapsed) * days + rev[T];
   const excused = excusedLoss(ws, store, msIdx, T - 1);
-  return { avgMonthly, realistic, topDown, fact, forecast, elapsed, days, excused };
+  return { avgMonthly, realistic, topDown, fact, forecast, elapsed, days, excused, overridden: !!override };
 }
 
 /** Estimated revenue lost for reasons outside the rep's control (delivery delays, debt blocks). */
@@ -697,7 +699,41 @@ export function runEngine(ws: Workspace, now: Date, todayStr: string, people: { 
       changed = true;
     }
   }
+  if (reminders(ws, now, todayStr, people)) changed = true;
   return { created, changed };
+}
+
+/** FR-017 end-of-day summary (18:00) and FR-042 SLA overdue notifications — each sent once. */
+export function reminders(ws: Workspace, now: Date, todayStr: string, people: { id: string; name: string }[]): boolean {
+  let changed = false;
+  ws.flags ??= {};
+  const nowT = now.getTime();
+  if (now.getHours() >= 18) {
+    const repIds = [...new Set(ws.stores.map((s) => s.repId))];
+    for (const repId of repIds) {
+      const key = `eod:${repId}:${todayStr}`;
+      if (ws.flags[key]) continue;
+      const today = ws.visits.filter((v) => v.repId === repId && v.date === todayStr);
+      if (!today.length) continue;
+      const left = today.filter((v) => v.status === 'planned' || v.status === 'in_progress').length;
+      const noReport = today.filter((v) => v.status === 'done' && !v.reportDone).length;
+      const done = today.filter((v) => v.status === 'done').length;
+      pushNotice(ws, { to: { userId: repId }, title: 'Итоги дня', body: `Выполнено ${done} из ${today.length} визитов${left ? `, не начато ${left}` : ''}${noReport ? `, без отчёта ${noReport}` : ''}. ${left || noReport ? 'Завершите до 19:00.' : 'Отличная работа!'}`, kind: 'reminder', link: '/' }, nowT);
+      ws.flags[key] = true;
+      changed = true;
+    }
+  }
+  for (const t of ws.tasks) {
+    if (t.status === 'done' || t.overdueNotified || t.dueAt > nowT) continue;
+    const who = t.assigneeId ? { userId: t.assigneeId } : { role: t.dept as Role };
+    const body = `${t.title} — срок истёк ${new Date(t.dueAt).toLocaleString('ru-RU', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}`;
+    pushNotice(ws, { to: who, title: 'Задача просрочена', body, kind: 'task', link: '/tasks' }, nowT);
+    if (t.dept !== 'manager') pushNotice(ws, { to: { role: 'manager' }, title: `Просрочена задача: ${DEPT_LABEL[t.dept]}`, body, kind: 'task', link: '/tasks' }, nowT);
+    t.overdueNotified = true;
+    changed = true;
+  }
+  void people;
+  return changed;
 }
 
 export function checkRecovered(ws: Workspace, sig: Signal, todayStr: string): { recovered: boolean; text: string; ratio: number } {

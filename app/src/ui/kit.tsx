@@ -95,8 +95,8 @@ export function Seg<T extends string>({ value, options, onChange, full }: { valu
 
 export function Switch({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label?: string }) {
   return (
-    <label className="switch" aria-label={label}>
-      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} />
+    <label className="switch">
+      <input type="checkbox" role="switch" aria-label={label} checked={checked} onChange={(e) => onChange(e.target.checked)} />
       <span />
     </label>
   );

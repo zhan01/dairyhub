@@ -5,6 +5,7 @@ import { ROLE_LABEL } from '../../domain/types';
 import { Icon } from '../../ui/Icon';
 import { Avatar, Card, Field, useAction, useHub } from '../../ui/kit';
 import { PageHead } from './common';
+import { NotificationSettings } from '../../ui/system';
 
 export function PasswordForm() {
   const { run, busy } = useAction();
@@ -43,6 +44,7 @@ export function Profile() {
           </div>
         </Card>
         <Card title="Смена пароля"><PasswordForm /></Card>
+        <Card title="Каналы уведомлений" pad0><div style={{ padding: '0 0 4px' }}><NotificationSettings /></div></Card>
       </div>
     </>
   );

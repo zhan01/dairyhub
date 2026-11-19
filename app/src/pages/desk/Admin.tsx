@@ -6,19 +6,22 @@ import { fmtDateTime, relTime } from '../../lib/date';
 import { Icon } from '../../ui/Icon';
 import { Avatar, Card, Empty, Field, Kpi, Seg, Sheet, useAction, useHub, useToast } from '../../ui/kit';
 import { PageHead } from './common';
+import { exportTable } from '../../lib/exporter';
+import { money } from '../../lib/format';
 
 const ROLES: Role[] = ['admin', 'manager', 'rep', 'warehouse', 'accounting'];
 
 export function Admin() {
-  const [tab, setTab] = useState<'users' | 'invites' | 'rules' | 'audit' | 'company'>('users');
+  const [tab, setTab] = useState<'users' | 'invites' | 'dirs' | 'rules' | 'audit' | 'company'>('users');
   return (
     <>
       <PageHead title="Администрирование" sub="Пользователи компании, роли и доступ, приглашения, параметры правил и журнал аудита" />
       <div style={{ marginBottom: 16 }}>
-        <Seg value={tab} onChange={setTab} options={[{ value: 'users', label: 'Пользователи' }, { value: 'invites', label: 'Приглашения' }, { value: 'rules', label: 'Правила' }, { value: 'audit', label: 'Журнал' }, { value: 'company', label: 'Компания' }]} />
+        <Seg value={tab} onChange={setTab} options={[{ value: 'users', label: 'Пользователи' }, { value: 'invites', label: 'Приглашения' }, { value: 'dirs', label: 'Справочники' }, { value: 'rules', label: 'Правила' }, { value: 'audit', label: 'Журнал' }, { value: 'company', label: 'Компания' }]} />
       </div>
       {tab === 'users' && <Users />}
       {tab === 'invites' && <Invites />}
+      {tab === 'dirs' && <Directories />}
       {tab === 'rules' && <Rules />}
       {tab === 'audit' && <Audit />}
       {tab === 'company' && <Company />}
@@ -213,7 +216,7 @@ function Audit() {
   const list = s.ws!.audit.filter((a) => !q || (a.text + a.by).toLowerCase().includes(q.toLowerCase())).slice(0, 200);
   return (
     <>
-      <div className="search" style={{ marginBottom: 12 }}><Icon name="search" size={16} /><input placeholder="Поиск по журналу" value={q} onChange={(e) => setQ(e.target.value)} /></div>
+      <div className="row gap8" style={{ marginBottom: 12 }}><div className="search"><Icon name="search" size={16} /><input placeholder="Поиск по журналу" value={q} onChange={(e) => setQ(e.target.value)} /></div><button className="btn" onClick={() => exportTable('dairyhub-audit', ['Время', 'Пользователь', 'Действие'], list.map((a) => [fmtDateTime(a.t), a.by, a.text]))}><Icon name="doc" size={16} />Excel</button></div>
       <Card pad0><div className="table-wrap"><table className="t"><thead><tr><th>Время</th><th>Пользователь</th><th>Действие</th></tr></thead><tbody>{list.map((a, i) => <tr key={i}><td className="sec" style={{ whiteSpace: 'nowrap' }}>{fmtDateTime(a.t)}</td><td style={{ whiteSpace: 'nowrap' }}>{a.by}</td><td>{a.text}</td></tr>)}</tbody></table></div></Card>
     </>
   );
@@ -242,6 +245,44 @@ function Company() {
         {s.ws!.demo && s.user!.email.endsWith(DEMO_DOMAIN) && (
           <button className="btn danger block mt16" onClick={() => { if (confirm('Пересоздать демо-данные? Все изменения в демо будут потеряны.')) void hub.resetDemoWorkspace(); }}>Сбросить демо-данные</button>
         )}
+      </Card>
+    </div>
+  );
+}
+
+function Directories() {
+  const s = useHub();
+  const ws = s.ws!;
+  const { run, busy } = useAction();
+  const [prices, setPrices] = useState<Record<string, string>>({});
+  const reps = s.people.filter((p) => p.role === 'rep' && p.status === 'active');
+  const [f, setF] = useState({ name: '', address: '', category: 'B' as 'A' | 'B' | 'C', repId: reps[0]?.id ?? '', lat: '43.2385', lng: '76.8890', days: [2, 5] as number[] });
+  const WD = ['', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+  return (
+    <div className="grid g2">
+      <Card title="Товары (SKU)" pad0 action={<button className="btn sm" onClick={() => exportTable('dairyhub-sku', ['Товар', 'Категория', 'Цена, ₸'], ws.skus.map((k) => [k.name, k.category, k.price]))}>Excel</button>}>
+        {ws.skus.map((k) => (
+          <div key={k.id} className="cell">
+            <div className="cell-main"><div className="cell-title">{k.name}</div><div className="cell-sub">{k.frozen ? 'через морозильник' : 'молочная продукция'} · сейчас {money(k.price)}</div></div>
+            <input className="input sm" style={{ width: 110 }} type="number" inputMode="numeric" placeholder={String(k.price)} value={prices[k.id] ?? ''} onChange={(e) => setPrices({ ...prices, [k.id]: e.target.value })} aria-label={`Цена ${k.name}`} />
+            <button className="btn sm" disabled={busy || !prices[k.id]} onClick={async () => { await run(() => hub.updateSku(k.id, { price: Number(prices[k.id]) }), 'Цена обновлена'); setPrices({ ...prices, [k.id]: '' }); }}>OK</button>
+          </div>
+        ))}
+      </Card>
+      <Card title="Новая торговая точка">
+        <div className="col gap12">
+          <Field label="Название"><input className="input" value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} placeholder="Минимаркет «…»" /></Field>
+          <Field label="Адрес"><input className="input" value={f.address} onChange={(e) => setF({ ...f, address: e.target.value })} placeholder="г. Алматы, ул. …" /></Field>
+          <div className="grid g2" style={{ gap: 12 }}>
+            <Field label="Широта"><input className="input" value={f.lat} onChange={(e) => setF({ ...f, lat: e.target.value })} inputMode="decimal" /></Field>
+            <Field label="Долгота"><input className="input" value={f.lng} onChange={(e) => setF({ ...f, lng: e.target.value })} inputMode="decimal" /></Field>
+          </div>
+          <div className="field"><span className="field-label">Категория</span><Seg full value={f.category} onChange={(v) => setF({ ...f, category: v })} options={[{ value: 'A', label: 'A · супермаркет' }, { value: 'B', label: 'B · минимаркет' }, { value: 'C', label: 'C · у дома' }]} /></div>
+          <Field label="Представитель"><select className="input" value={f.repId} onChange={(e) => setF({ ...f, repId: e.target.value })}>{reps.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}</select></Field>
+          <div className="field"><span className="field-label">Дни визитов</span><div className="row gap4">{[1, 2, 3, 4, 5, 6].map((w) => { const on = f.days.includes(w); return <button key={w} className={`btn sm ${on ? 'primary' : ''}`} onClick={() => setF({ ...f, days: on ? f.days.filter((x) => x !== w) : [...f.days, w] })}>{WD[w]}</button>; })}</div></div>
+          <button className="btn primary lg block" disabled={busy || !f.name.trim() || !f.repId} onClick={async () => { const id = await run(() => hub.addStore({ name: f.name, address: f.address, category: f.category, repId: f.repId, lat: Number(f.lat.replace(',', '.')), lng: Number(f.lng.replace(',', '.')), visitDays: f.days }), 'Точка добавлена'); if (id) setF({ ...f, name: '', address: '' }); }}>Добавить точку</button>
+          <div className="hint">Координаты можно взять из 2ГИС или Google Maps. Геозона визита строится вокруг них.</div>
+        </div>
       </Card>
     </div>
   );

@@ -6,6 +6,7 @@ import { hub } from './api/hub';
 import { ToastProvider, useHub, Spinner } from './ui/kit';
 import { Landing } from './pages/public/Landing';
 import { Login, Register } from './pages/public/Auth';
+import { BrowserNotifier, OfflineBanner } from './ui/system';
 
 const DeskApp = lazy(() => import('./pages/desk/DeskApp'));
 const RepApp = lazy(() => import('./pages/rep/RepApp'));
@@ -56,6 +57,8 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { err: Error | nu
 function App() {
   return (
     <HashRouter>
+      <OfflineBanner />
+      <BrowserNotifier />
       <ScrollTop />
       <Routes>
         <Route path="/" element={<Landing />} />
@@ -70,6 +73,9 @@ function App() {
 }
 
 void hub.init();
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(() => undefined); });
+}
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ErrorBoundary>

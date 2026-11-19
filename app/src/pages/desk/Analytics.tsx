@@ -7,6 +7,8 @@ import { moneyShort, num, pct, signedPct } from '../../lib/format';
 import { Columns, HBar, LineChart } from '../../ui/charts';
 import { Card, Kpi, Seg, useHub } from '../../ui/kit';
 import { PageHead } from './common';
+import { exportTable } from '../../lib/exporter';
+import { Icon } from '../../ui/Icon';
 
 type P = 'day' | 'week' | 'month';
 const LEN: Record<P, number> = { day: 1, week: 7, month: 28 };
@@ -80,7 +82,7 @@ export function Analytics() {
           <Columns values={d.coverage.map((c) => c * 100)} labels={d.vDays.map((x) => `${fmtWeekday(x)} ${fmtDayShort(x)}`)} color="var(--green)" format={(n) => `${Math.round(n)}%`} height={180} />
         </Card>
       </div>
-      <Card title="По товарам" pad0 className="mt16">
+      <Card title="По товарам" pad0 className="mt16" action={<button className="btn sm" style={{ marginRight: 20 }} onClick={() => exportTable(`dairyhub-tovary-${p}`, ['Товар', `${LBL[p][0]}, шт`, `${LBL[p][1]}, шт`, 'Изменение, %', 'Выручка, ₸'], d.skus.map((x) => [x.k.name, x.c, x.pv, Math.round(x.ch * 100), Math.round(x.rev)]))}><Icon name="doc" size={14} />Excel</button>}>
         <div className="table-wrap"><table className="t"><thead><tr><th>Товар</th><th className="r">{LBL[p][0]}, шт</th><th className="r">{LBL[p][1]}, шт</th><th className="r">Изменение</th><th className="r">Выручка</th></tr></thead>
           <tbody>{d.skus.map((x) => <tr key={x.k.id}><td>{x.k.name}</td><td className="r">{num(x.c)}</td><td className="r">{num(x.pv)}</td><td className={`r ${x.ch <= -0.1 ? 'delta-down' : x.ch >= 0.05 ? 'delta-up' : ''}`}>{signedPct(x.ch)}</td><td className="r">{moneyShort(x.rev)}</td></tr>)}</tbody></table></div>
       </Card>

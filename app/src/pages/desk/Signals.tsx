@@ -11,6 +11,7 @@ import { Columns } from '../../ui/charts';
 import { CONF_LABEL, Card, Empty, Field, SEV_ICON, STATUS_BADGE, Seg, Sheet, useAction, useHub } from '../../ui/kit';
 import { BackLink, PageHead, SignalRow, TaskLine, storeName } from './common';
 import { TaskSheet } from './Tasks';
+import { exportTable } from '../../lib/exporter';
 
 type F = 'active' | 'monitoring' | 'closed' | 'all';
 
@@ -33,7 +34,7 @@ export function Signals() {
 
   return (
     <>
-      <PageHead title="Сигналы" sub="Отклонения, которые DairyHub обнаружил автоматически, с возможными причинами и ответственными" />
+      <PageHead title="Сигналы" sub="Отклонения, которые DairyHub обнаружил автоматически, с возможными причинами и ответственными" actions={<button className="btn" onClick={() => exportTable('dairyhub-signaly', ['Обнаружен', 'Тип', 'Важность', 'Статус', 'Сигнал', 'Описание', 'Основная причина', 'Подразделение'], list.map((x) => [fmtDateTime(x.detectedAt), SIGNAL_LABEL[x.type], x.severity === 'high' ? 'высокая' : x.severity === 'medium' ? 'средняя' : 'низкая', SIGNAL_STATUS_LABEL[x.status], x.title, x.summary, x.hypotheses[0]?.title ?? '', x.hypotheses[0] ? DEPT_LABEL[x.hypotheses[0].dept] : '']))}><Icon name="doc" size={16} />Excel</button>} />
       <div className="row gap8 wrap" style={{ marginBottom: 16 }}>
         <Seg value={f} onChange={setF} options={[{ value: 'active', label: 'Активные' }, { value: 'monitoring', label: 'На контроле' }, { value: 'closed', label: 'Закрытые' }, { value: 'all', label: 'Все' }]} />
         <select className="input sm" style={{ width: 'auto' }} value={type} onChange={(e) => setType(e.target.value as SignalType)} aria-label="Тип сигнала">

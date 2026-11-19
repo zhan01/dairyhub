@@ -7,6 +7,9 @@ import { money, moneyShort, num1, pct, signedPct } from '../../lib/format';
 import { LineChart, PlanRings, Sparkline } from '../../ui/charts';
 import { Avatar, Card, Empty, Kpi, useHub } from '../../ui/kit';
 import { BackLink, PageHead, SignalRow, storeName } from './common';
+import { TeamLiveMap, TrackCard } from './Track';
+import { exportTable } from '../../lib/exporter';
+import { Icon } from '../../ui/Icon';
 
 export function useRepRows() {
   const s = useHub();
@@ -31,8 +34,9 @@ export function Team() {
   const nav = useNavigate();
   return (
     <>
-      <PageHead title="Команда" sub="Объективная картина по каждому представителю: визиты, продажи, план и нагрузка маршрута" />
-      <Card pad0>
+      <PageHead title="Команда" sub="Объективная картина по каждому представителю: визиты, продажи, план и нагрузка маршрута" actions={<button className="btn" onClick={() => exportTable('dairyhub-komanda', ['Представитель', 'Точек', 'Визиты 7 дн, %', 'Пропуски', 'Ср. визит, мин', 'Продажи 7 дн, ₸', 'Изменение, %', 'Прогноз плана, %', 'Визитов в день'], rows.map((r) => [r.name, r.stores, Math.round(r.v.coverage * 100), r.v.missed, Math.round(r.v.avgDur), Math.round(r.d.last7), Math.round(r.d.change * 100), Math.round(r.plan.completion * 100), Math.round(r.load.perDay * 10) / 10]))}><Icon name="doc" size={16} />Экспорт в Excel</button>} />
+      <TeamLiveMap />
+      <Card pad0 className="mt16">
         <div className="table-wrap">
           <table className="t">
             <thead>
@@ -105,6 +109,7 @@ export function RepDetail() {
           <div className="hint mt8">Скорректированное выполнение не учитывает потери из-за задержек поставок и блокировок отгрузок — то, что не зависит от сотрудника.</div>
         </Card>
       </div>
+      <div className="mt16"><TrackCard repId={r.rid} /></div>
       {data.sigs.length > 0 && <Card title="Активные сигналы" pad0 className="mt16">{data.sigs.map((x) => <SignalRow key={x.id} s={x} />)}</Card>}
       <Card title="Визиты за 7 дней (GPS)" pad0 className="mt16">
         <div className="table-wrap">

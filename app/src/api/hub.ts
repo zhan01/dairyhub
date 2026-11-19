@@ -20,7 +20,7 @@ export const DEMO_ACCOUNTS: { email: string; role: Role; name: string }[] = [
   { email: `accounting@${DEMO_DOMAIN}`, role: 'accounting', name: 'Гульнара Исаева' },
   { email: `admin@${DEMO_DOMAIN}`, role: 'admin', name: 'Администратор демо' },
 ];
-const DEMO_WS_KEY = 'dh:demo-ws:v1';
+const DEMO_WS_KEY = 'dh:demo-ws:v3';
 const MAX_FAILED = 5;
 const LOCK_MIN = 15;
 const SESSION_H = 12;
@@ -133,6 +133,11 @@ class Hub {
     this.state.user = user;
     this.state.impersonator = s.impersonatedBy ? users.find((u) => u.id === s.impersonatedBy) ?? null : null;
     this.state.people = users.filter((u) => u.wsId === ws.id);
+    // migrate workspaces created by earlier versions
+    ws.shifts ??= [];
+    ws.planOverrides ??= {};
+    ws.planApprovals ??= {};
+    ws.flags ??= {};
     this.state.ws = ws;
     await this.refresh(false);
   }
@@ -312,14 +317,23 @@ class Hub {
   async setUserRole(id: string, role: Role) {
     const me = this.requireRole('admin');
     if (id === me.id && role !== 'admin') throw new ApiError('Нельзя снять роль администратора с самого себя');
+    this.ensureAdminRemains(id, role !== 'admin');
     const u = this.updateUser(id, (x) => (x.role = role));
     await this.mutate(() => undefined, `Роль пользователя ${u.name} изменена на «${ROLE_LABEL[role]}»`);
   }
   async setUserBlocked(id: string, blocked: boolean) {
     const me = this.requireRole('admin');
     if (id === me.id) throw new ApiError('Нельзя заблокировать самого себя');
+    if (blocked) this.ensureAdminRemains(id, true);
     const u = this.updateUser(id, (x) => { x.status = blocked ? 'blocked' : 'active'; x.lockUntil = undefined; x.failed = 0; });
     await this.mutate(() => undefined, `${blocked ? 'Заблокирован' : 'Разблокирован'} пользователь ${u.name}`);
+  }
+  /** FR-092: the company must always keep at least one active administrator */
+  private ensureAdminRemains(changingId: string, losesAdmin: boolean) {
+    if (!losesAdmin) return;
+    const admins = this.state.people.filter((u) => u.role === 'admin' && u.status === 'active' && u.id !== changingId);
+    const target = this.state.people.find((u) => u.id === changingId);
+    if (target?.role === 'admin' && admins.length === 0) throw new ApiError('В компании должен остаться хотя бы один активный администратор');
   }
   async updateUserProfile(id: string, patch: { name?: string; phone?: string }) {
     this.requireRole('admin');
@@ -594,6 +608,122 @@ class Hub {
         f.program.actions.push({ t: Date.now(), text: `Переход к этапу ${f.program.stage}: ${PROGRAM_STAGES[f.program.stage - 1]}`, by: me.name });
       }
     }, `Программа морозильника ${this.state.ws!.freezers.find((x) => x.id === id)?.serial} обновлена`);
+  }
+
+  // ---------- GPS shift tracking ----------
+  activeShift(repId?: string) {
+    const id = repId ?? this.state.user?.id;
+    return this.state.ws?.shifts.find((sh) => sh.repId === id && !sh.endAt && sh.date === this.state.today);
+  }
+  async startShift(simulated: boolean) {
+    const me = this.requireRole('rep');
+    if (this.activeShift()) return;
+    await this.mutate((ws) => {
+      ws.shifts.push({ id: uid('sh_'), repId: me.id, date: this.state.today, startAt: Date.now(), points: [], simulated });
+    }, simulated ? 'Начата смена (демо-GPS)' : 'Начата смена, включён GPS-трек');
+  }
+  private lastTrackSave = 0;
+  async addTrackPoint(lat: number, lng: number, accuracy: number) {
+    const sh = this.activeShift();
+    if (!sh) return;
+    const last = sh.points[sh.points.length - 1];
+    const t = Date.now();
+    if (last && haversine(last[0], last[1], lat, lng) < 20 && t - last[2] < 60000) return;
+    if (accuracy > 300) return; // ignore very inaccurate fixes
+    sh.points.push([Math.round(lat * 1e6) / 1e6, Math.round(lng * 1e6) / 1e6, t, Math.round(accuracy)]);
+    if (t - this.lastTrackSave > 15000) {
+      this.lastTrackSave = t;
+      await this.persist();
+    }
+    this.emit();
+  }
+  async endShift() {
+    const sh = this.activeShift();
+    if (!sh) return;
+    await this.mutate(() => { sh.endAt = Date.now(); }, 'Смена завершена, GPS-трек остановлен');
+  }
+
+  // ---------- plans (FR-051) ----------
+  async setPlanOverride(storeId: string, value: number | null, comment: string) {
+    const me = this.requireRole('admin', 'manager');
+    if (value !== null && (!Number.isFinite(value) || value <= 0)) throw new ApiError('Укажите сумму плана больше нуля');
+    if (!comment.trim()) throw new ApiError('Укажите основание корректировки');
+    const st = this.state.ws!.stores.find((x) => x.id === storeId)!;
+    await this.mutate((ws) => {
+      if (value === null) delete ws.planOverrides[storeId];
+      else ws.planOverrides[storeId] = { value: Math.round(value), comment: comment.trim(), by: me.name, t: Date.now() };
+    }, value === null ? `План точки ${st.name} возвращён к расчётному: ${comment}` : `План точки ${st.name} скорректирован до ${Math.round(value).toLocaleString('ru-RU')} ₸: ${comment}`);
+  }
+  async approvePlan(month: string) {
+    const me = this.requireRole('admin', 'manager');
+    await this.mutate((ws) => { ws.planApprovals[month] = { by: me.name, t: Date.now() }; }, `План на ${month} утверждён`);
+  }
+
+  // ---------- routes & directories (FR-019, FR-084) ----------
+  async setVisitDays(storeId: string, days: number[]) {
+    this.requireRole('admin', 'manager');
+    if (!days.length) throw new ApiError('Выберите хотя бы один день визита');
+    const st = this.state.ws!.stores.find((x) => x.id === storeId)!;
+    await this.mutate((ws) => { ws.stores.find((x) => x.id === storeId)!.visitDays = [...days].sort(); }, `Изменён график визитов: ${st.name}`);
+  }
+  async updateSku(id: string, patch: { name?: string; price?: number }) {
+    this.requireRole('admin', 'manager');
+    if (patch.price !== undefined && (!Number.isFinite(patch.price) || patch.price <= 0)) throw new ApiError('Некорректная цена');
+    await this.mutate((ws) => {
+      const k = ws.skus.find((x) => x.id === id)!;
+      if (patch.name?.trim()) { k.name = patch.name.trim(); }
+      if (patch.price !== undefined) k.price = Math.round(patch.price);
+    }, `Изменён товар ${this.state.ws!.skus.find((x) => x.id === id)?.name}`);
+  }
+  async addStore(p: { name: string; address: string; category: 'A' | 'B' | 'C'; repId: string; lat: number; lng: number; visitDays: number[] }) {
+    this.requireRole('admin', 'manager');
+    if (p.name.trim().length < 2) throw new ApiError('Укажите название точки');
+    if (!Number.isFinite(p.lat) || !Number.isFinite(p.lng) || Math.abs(p.lat) > 90 || Math.abs(p.lng) > 180) throw new ApiError('Некорректные координаты');
+    if (!p.visitDays.length) throw new ApiError('Выберите дни визитов');
+    const id = uid('st_');
+    await this.mutate((ws) => {
+      const len = Object.values(Object.values(ws.sales)[0] ?? {})[0]?.length ?? 1;
+      ws.stores.push({ id, name: p.name.trim(), channel: p.category === 'A' ? 'Супермаркет' : p.category === 'B' ? 'Минимаркет' : 'Магазин у дома', address: p.address.trim(), lat: p.lat, lng: p.lng, category: p.category, repId: p.repId, visitDays: [...p.visitDays].sort(), volume: 1, debt: 0, debtOverdueDays: 0, creditLimit: 500000, shipmentsBlocked: false, priceIndex: 1, contact: '' });
+      ws.sales[id] = Object.fromEntries(ws.skus.map((k) => [k.id, new Array(len).fill(0)]));
+    }, `Добавлена точка ${p.name.trim()}`);
+    return id;
+  }
+
+  // ---------- tasks: rejection & attachments (FR-035, FR-040) ----------
+  async rejectTask(id: string, comment: string) {
+    const me = this.me();
+    if (!comment.trim()) throw new ApiError('Опишите, почему причина не подтвердилась');
+    await this.mutate((ws) => {
+      const t = ws.tasks.find((x) => x.id === id)!;
+      if (!this.canSeeDept(t.dept) && t.assigneeId !== me.id) throw new ApiError('Задача относится к другому подразделению');
+      t.status = 'done';
+      t.rejected = true;
+      t.doneAt = Date.now();
+      t.comments.push({ t: Date.now(), text: `Гипотеза не подтвердилась: ${comment.trim()}`, by: me.name });
+      const s = t.signalId ? ws.signals[t.signalId] : undefined;
+      if (s) {
+        s.history.push({ t: Date.now(), text: `${DEPT_LABEL[t.dept]} отклонил гипотезу «${t.title}»: ${comment.trim()}`, by: me.name });
+        const all = s.taskIds.map((tid) => ws.tasks.find((x) => x.id === tid)!).filter(Boolean);
+        if (all.every((x) => x.rejected)) {
+          s.status = 'new';
+          s.history.push({ t: Date.now(), text: 'Все гипотезы отклонены — требуется повторный анализ руководителем', by: SYSTEM });
+        } else if (all.every((x) => x.status === 'done')) {
+          s.status = 'monitoring';
+          s.monitorUntil = addDays(this.state.today, ws.settings.monitorDays);
+        }
+      }
+      pushNotice(ws, { to: { role: 'manager' }, title: 'Гипотеза отклонена исполнителем', body: `${t.title}: ${comment.trim()}`, kind: 'task', link: s ? `/signals/${encodeURIComponent(s.id)}` : '/tasks' });
+    }, `Отклонена гипотеза по задаче «${this.state.ws!.tasks.find((x) => x.id === id)?.title}»`);
+  }
+  async addTaskAttachment(taskId: string, dataUrl: string) {
+    const me = this.me();
+    const pid = uid('ph_');
+    await photoStore.put(pid, dataUrl);
+    await this.mutate((ws) => {
+      const t = ws.tasks.find((x) => x.id === taskId)!;
+      t.attachments = [...(t.attachments ?? []), pid];
+      t.comments.push({ t: Date.now(), text: 'Добавлено вложение', by: me.name });
+    });
   }
 
   // ---------- notices ----------

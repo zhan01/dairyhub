@@ -4,6 +4,7 @@ import { haversine } from '../lib/geo';
 import { CATEGORY_COEF, DISTRICT_CENTERS, REP_PEOPLE, SCENARIO, SKUS, STAFF_PEOPLE, WEEKDAY_FACTOR, storeIdentity } from './catalog';
 import type { Delivery, Freezer, Role, Sku, Store, Visit, Workspace } from './types';
 import { DEFAULT_SETTINGS } from './types';
+import { demoShift } from './track';
 
 export const HISTORY_DAYS = 84;
 
@@ -201,7 +202,7 @@ export function createWorkspace(opts: SeedOptions): { ws: Workspace; people: See
         const startH = 9.5 + k * 1.25;
         const v: Visit = { id: uid('v_'), storeId: st.id, repId: rep.id, date, status: 'planned', photoIds: [], reportDone: false, flags: [] };
         const isToday = d === 0;
-        const keepPlanned = isToday && (ri === 0 ? k >= 1 : startH + 0.7 > nowH);
+        const keepPlanned = isToday && (startH + 0.7 > nowH || (ri === 0 && k >= 1));
         if (!keepPlanned) {
           const erlanMiss = ri === 1 && d >= -9 && d < 0 && r.chance(0.5);
           const randomMiss = d < 0 && r.chance(0.035);
@@ -274,6 +275,19 @@ export function createWorkspace(opts: SeedOptions): { ws: Workspace; people: See
     });
   }
 
+  // ---------- GPS shift tracks (last 7 days) ----------
+  const shifts: Workspace['shifts'] = [];
+  reps.forEach((rep, ri) => {
+    const [clat, clng] = DISTRICT_CENTERS[ri];
+    const home: [number, number] = [clat - 0.018 + r.range(-0.004, 0.004), clng + r.range(-0.01, 0.01)];
+    for (let d = -6; d <= 0; d++) {
+      const date = addDays(opts.today, d);
+      const dayVisits = visits.filter((v) => v.repId === rep.id && v.date === date);
+      const sh = demoShift(rep.id, date, home, dayVisits, stores, r.next, d === 0);
+      if (sh) { if (d === 0) sh.simulated = true; shifts.push(sh); }
+    }
+  });
+
   const ws: Workspace = {
     id: wsId,
     company: opts.company,
@@ -295,6 +309,10 @@ export function createWorkspace(opts: SeedOptions): { ws: Workspace; people: See
     notices: [],
     invites: [],
     settings: { ...DEFAULT_SETTINGS },
+    shifts,
+    planOverrides: {},
+    planApprovals: {},
+    flags: {},
     audit: [{ t: Date.now(), by: 'DairyHub', text: 'Рабочее пространство создано и заполнено демонстрационными данными' }],
   };
   return { ws, people };

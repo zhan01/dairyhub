@@ -11,7 +11,13 @@ export interface MapPoint {
   popup?: string;
 }
 
-export function MapView({ points, height, className = '', onSelect, radius }: { points: MapPoint[]; height?: number; className?: string; onSelect?: (id: string) => void; radius?: { lat: number; lng: number; m: number } }) {
+export interface MapLine {
+  points: [number, number][];
+  color: string;
+  dashed?: boolean;
+}
+
+export function MapView({ points, height, className = '', onSelect, radius, lines }: { points: MapPoint[]; height?: number; className?: string; onSelect?: (id: string) => void; radius?: { lat: number; lng: number; m: number }; lines?: MapLine[] }) {
   const el = useRef<HTMLDivElement>(null);
   const map = useRef<L.Map | null>(null);
   const layer = useRef<L.LayerGroup | null>(null);
@@ -42,10 +48,12 @@ export function MapView({ points, height, className = '', onSelect, radius }: { 
       mk.on('click', () => sel.current?.(p.id));
     }
     if (radius) L.circle([radius.lat, radius.lng], { radius: radius.m, color: '#0a84ff', weight: 1.5, fillOpacity: 0.08 }).addTo(g);
-    if (points.length === 1) m.setView([points[0].lat, points[0].lng], 15);
-    else if (points.length) m.fitBounds(L.latLngBounds(points.map((p) => [p.lat, p.lng] as [number, number])).pad(0.12));
+    for (const ln of lines ?? []) if (ln.points.length > 1) L.polyline(ln.points, { color: ln.color, weight: 4, opacity: 0.9, dashArray: ln.dashed ? '6 8' : undefined, lineCap: 'round', lineJoin: 'round' }).addTo(g);
+    const all: [number, number][] = [...points.map((p) => [p.lat, p.lng] as [number, number]), ...(lines ?? []).flatMap((l) => l.points)];
+    if (all.length === 1) m.setView(all[0], 15);
+    else if (all.length) m.fitBounds(L.latLngBounds(all).pad(0.12));
     setTimeout(() => m.invalidateSize(), 50);
-  }, [points, radius]);
+  }, [points, radius, lines]);
 
   return <div ref={el} className={`map ${className}`} style={height ? { height } : undefined} />;
 }

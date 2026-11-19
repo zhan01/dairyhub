@@ -14,6 +14,8 @@ import { TaskSheet } from '../desk/Tasks';
 import { taskState } from '../desk/common';
 import { PasswordForm } from '../desk/Profile';
 import { VisitFlow } from './VisitFlow';
+import { NotificationSettings } from '../../ui/system';
+import { ShiftCard, ShiftTracker } from './Shift';
 
 export function usePosition() {
   const [pos, setPos] = useState<GeolocationPosition | null>(null);
@@ -50,6 +52,7 @@ export default function RepApp() {
   ];
   return (
     <div className="phone">
+      {!s.impersonator && <ShiftTracker />}
       {s.impersonator && <div className="imp-bar"><Icon name="eye" size={16} />Просмотр как {s.user!.name}<button className="btn sm" onClick={() => hub.stopImpersonation()}>Вернуться</button></div>}
       <div className="fade-in" key={loc.pathname}>
         <Routes>
@@ -114,6 +117,7 @@ function Today() {
             <Icon name="chevR" size={20} />
           </button>
         )}
+        <ShiftCard />
         <Link to="/rep/me" className="card row gap16" style={{ color: 'inherit' }}>
           <PlanRings value={plan.completion} size={96} />
           <div className="grow">
@@ -335,6 +339,7 @@ function Me() {
           </div>
           <div className="hint mt8">Премия: уровни 80%, 100% и 120% плана. Задержки поставок и блокировки отгрузок не уменьшают ваш результат.</div>
         </div>
+        <div><div className="group-title">Уведомления</div><NotificationSettings /></div>
         <div className="card"><div className="t-headline" style={{ marginBottom: 12 }}>Смена пароля</div><PasswordForm /></div>
         <button className="btn danger lg block" onClick={() => hub.logout()}><Icon name="logout" size={18} />Выйти</button>
         <Link to="/" className="btn plain block">О проекте DairyHub</Link>

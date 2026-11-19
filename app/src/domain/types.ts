@@ -231,6 +231,28 @@ export interface Task {
   doneAt?: number;
   createdBy: string;
   comments: { t: number; text: string; by: string }[];
+  attachments?: string[];
+  overdueNotified?: boolean;
+  rejected?: boolean;
+}
+
+/** GPS track of a working shift (collected only between «Начать смену» and «Завершить смену»). */
+export interface Shift {
+  id: string;
+  repId: string;
+  date: string;
+  startAt: number;
+  endAt?: number;
+  /** [lat, lng, timestamp, accuracy] */
+  points: [number, number, number, number][];
+  simulated?: boolean;
+}
+
+export interface PlanOverride {
+  value: number;
+  comment: string;
+  by: string;
+  t: number;
 }
 
 export interface Notice {
@@ -288,6 +310,10 @@ export interface Workspace {
   invites: Invite[];
   settings: Settings;
   audit: { t: number; by: string; text: string }[];
+  shifts: Shift[];
+  planOverrides: Record<string, PlanOverride>;
+  planApprovals: Record<string, { by: string; t: number }>;
+  flags: Record<string, boolean>;
 }
 
 export const DEFAULT_SETTINGS: Settings = {

@@ -8,6 +8,9 @@ import { Icon } from '../../ui/Icon';
 import { Card, Empty, Field, Seg, Sheet, useAction, useHub } from '../../ui/kit';
 import { PageHead, TaskLine, storeName, taskState } from './common';
 import { NewTaskSheet } from './Signals';
+import { exportTable } from '../../lib/exporter';
+import { compressImage, photoStore } from '../../api/storage';
+import { useEffect, useRef } from 'react';
 
 export function Tasks() {
   const s = useHub();
@@ -30,7 +33,7 @@ export function Tasks() {
 
   return (
     <>
-      <PageHead title="Задачи" sub={isMgr ? 'Межотдельные задачи, созданные DairyHub и руководителями, с контролем SLA' : `Задачи подразделения «${DEPT_LABEL[role as Dept]}»`} actions={isMgr ? <button className="btn primary" onClick={() => setCreate(true)}><Icon name="plus" size={16} />Новая задача</button> : undefined} />
+      <PageHead title="Задачи" sub={isMgr ? 'Межотдельные задачи, созданные DairyHub и руководителями, с контролем SLA' : `Задачи подразделения «${DEPT_LABEL[role as Dept]}»`} actions={<><button className="btn" onClick={() => exportTable('dairyhub-zadachi', ['Создана', 'Задача', 'Подразделение', 'Исполнитель', 'Точка', 'Срок', 'Статус', 'Выполнена', 'Последний комментарий'], list.map((t) => [fmtDateTime(t.createdAt), t.title, DEPT_LABEL[t.dept], t.assigneeId ? personName(t.assigneeId) : '', t.storeId ? storeName(t.storeId) : '', fmtDateTime(t.dueAt), t.rejected ? 'Гипотеза отклонена' : taskState(t).label, t.doneAt ? fmtDateTime(t.doneAt) : '', t.comments[t.comments.length - 1]?.text ?? '']))}><Icon name="doc" size={16} />Excel</button>{isMgr && <button className="btn primary" onClick={() => setCreate(true)}><Icon name="plus" size={16} />Новая задача</button>}</>} />
       <div className="row gap8 wrap" style={{ marginBottom: 16 }}>
         <Seg value={view} onChange={setView} options={[{ value: 'open', label: 'Открытые' }, { value: 'done', label: 'Выполненные' }]} />
         {isMgr && <Seg value={dept} onChange={setDept} options={[{ value: 'all', label: 'Все' }, { value: 'warehouse', label: 'Склад' }, { value: 'accounting', label: 'Бухгалтерия' }, { value: 'manager', label: 'Руководитель' }, { value: 'rep', label: 'Представители' }]} />}
@@ -92,8 +95,42 @@ export function TaskSheet({ id, onClose }: { id: string | null; onClose: () => v
           </>
         )}
         {can && t.status !== 'done' && c.trim() && <button className="btn plain" onClick={async () => { await run(() => hub.commentTask(t.id, c), 'Комментарий добавлен'); setC(''); }}>Только добавить комментарий</button>}
+        {can && t.status !== 'done' && t.signalId && <button className="btn danger block" disabled={busy} onClick={async () => { const r = await run(() => hub.rejectTask(t.id, c).then(() => true), 'Гипотеза отклонена, руководитель уведомлён'); if (r) { setC(''); onClose(); } }}>Причина не подтвердилась</button>}
+        {can && t.status !== 'done' && t.signalId && <div className="hint" style={{ marginTop: -8 }}>Опишите в комментарии, что проверили — руководитель увидит это в сигнале.</div>}
+        <Attachments task={t} can={can} />
         {!can && <div className="info-box t-foot">Задача относится к другому подразделению — доступен только просмотр.</div>}
       </div>
     </Sheet>
+  );
+}
+
+function Thumb({ id }: { id: string }) {
+  const [src, setSrc] = useState<string>();
+  useEffect(() => { void photoStore.get(id).then(setSrc); }, [id]);
+  return src ? <a href={src} target="_blank" rel="noreferrer"><img src={src} alt="Вложение" style={{ width: 72, height: 72, objectFit: 'cover', borderRadius: 12 }} /></a> : null;
+}
+
+function Attachments({ task, can }: { task: Task; can: boolean }) {
+  const input = useRef<HTMLInputElement>(null);
+  const { run, busy } = useAction();
+  const list = task.attachments ?? [];
+  if (!list.length && !can) return null;
+  return (
+    <div>
+      <div className="field-label" style={{ marginBottom: 6 }}>Вложения</div>
+      <div className="row gap8 wrap">
+        {list.map((id) => <Thumb key={id} id={id} />)}
+        {can && (
+          <>
+            <input ref={input} type="file" accept="image/*" hidden onChange={async (e) => {
+              const f = e.target.files?.[0];
+              e.target.value = '';
+              if (f) await run(async () => hub.addTaskAttachment(task.id, await compressImage(f)), 'Вложение добавлено');
+            }} />
+            <button className="photo-add" style={{ width: 72, height: 72 }} disabled={busy} onClick={() => input.current?.click()} aria-label="Добавить фото"><Icon name="camera" size={22} /></button>
+          </>
+        )}
+      </div>
+    </div>
   );
 }

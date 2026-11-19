@@ -11,6 +11,7 @@ import { MapView } from '../../ui/MapView';
 import { Card, Empty, Kpi, Seg, useAction, useHub } from '../../ui/kit';
 import { BackLink, PageHead, SignalRow } from './common';
 import { NewTaskSheet } from './Signals';
+import { exportTable } from '../../lib/exporter';
 
 const WD = ['', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
@@ -36,7 +37,7 @@ export function Stores() {
 
   return (
     <>
-      <PageHead title="Торговые точки" sub={`${ws.stores.length} точек · закрепление за представителями, потенциал, оборудование и задолженность`} actions={<Seg value={view} onChange={setView} options={[{ value: 'list', label: 'Список' }, { value: 'map', label: 'Карта' }]} />} />
+      <PageHead title="Торговые точки" sub={`${ws.stores.length} точек · закрепление за представителями, потенциал, оборудование и задолженность`} actions={<><button className="btn" onClick={() => exportTable('dairyhub-tochki', ['Точка', 'Адрес', 'Категория', 'Представитель', 'Дни визитов', 'Продажи 7 дн, ₸', 'Изменение, %', 'Оборудование', 'Долг, ₸', 'Просрочка, дн'], rows.map(({ x, d, fz }) => [x.name, x.address, x.category, personName(x.repId), x.visitDays.map((w) => WD[w]).join(', '), Math.round(d.last7), Math.round(d.change * 100), fz ? `${fz.serial} (${FREEZER_STATUS_LABEL[fz.status]})` : '', x.debt, x.debtOverdueDays]))}><Icon name="doc" size={16} />Excel</button><Seg value={view} onChange={setView} options={[{ value: 'list', label: 'Список' }, { value: 'map', label: 'Карта' }]} /></>} />
       <div className="row gap8 wrap" style={{ marginBottom: 16 }}>
         <div className="search"><Icon name="search" size={16} /><input placeholder="Название или адрес" value={q} onChange={(e) => setQ(e.target.value)} /></div>
         <select className="input sm" style={{ width: 'auto' }} value={rep} onChange={(e) => setRep(e.target.value)} aria-label="Представитель"><option value="">Все представители</option>{reps.map((r) => <option key={r} value={r}>{personName(r)}</option>)}</select>
@@ -133,7 +134,10 @@ export function StoreDetail() {
                 <select className="input sm" style={{ width: 'auto' }} value={st.repId} onChange={(e) => run(() => hub.reassignStore(st.id, e.target.value), 'Точка передана')}>
                   {s.people.filter((p) => p.role === 'rep').map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
                 </select>) : <b>{personName(st.repId)}</b>}</div>
-              <div className="row between"><span className="sec">Дни визитов</span><b>{st.visitDays.map((w) => WD[w]).join(', ')}</b></div>
+              <div className="row between"><span className="sec">Дни визитов</span>{isMgr ? (
+                <div className="row gap4">{[1, 2, 3, 4, 5, 6].map((w) => { const on = st.visitDays.includes(w); return <button key={w} className={`btn sm ${on ? 'primary' : ''}`} style={{ padding: '0 9px' }} onClick={() => run(() => hub.setVisitDays(st.id, on ? st.visitDays.filter((x) => x !== w) : [...st.visitDays, w]), 'График визитов обновлён')}>{WD[w]}</button>; })}</div>
+              ) : <b>{st.visitDays.map((w) => WD[w]).join(', ')}</b>}</div>
+              {isMgr && <div className="hint">Изменения применяются к маршрутам со следующего дня.</div>}
             </div>
           </Card>
           <Card title="Оборудование" pad0>
