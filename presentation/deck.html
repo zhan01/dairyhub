@@ -47,133 +47,184 @@
   .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
 </style>
 </head>
+<style>
+  .src { position:absolute; left:112px; bottom:78px; font-size:15px; color:rgba(235,235,245,.36); max-width:1500px; line-height:1.4; }
+  .big { font-size: 96px; font-weight: 800; letter-spacing: -.04em; line-height: 1; }
+  .mtx td { padding: 12px 10px; font-size: 21px; text-align:center; }
+  .mtx td:first-child { text-align:left; }
+  .ok { color: var(--green); font-weight: 800; }
+  .no { color: rgba(235,235,245,.28); }
+  .part { color: var(--orange); font-weight: 700; }
+  .tag { display:inline-block; padding:5px 14px; border-radius:999px; font-size:17px; font-weight:700; }
+</style>
 <body>
 
-<!-- 1 -->
+<!-- 1. Title -->
 <section class="s" style="display:flex; flex-direction:column; justify-content:center;">
   <div class="logo" style="position:absolute; top:72px; left:112px;"><img src="img/icon.svg" />DairyHub</div>
-  <div class="kicker">Цифровизация управления торговой командой</div>
+  <div class="kicker">B2B SaaS · Retail execution · FMCG</div>
   <h1 style="margin-top:28px;">DairyHub</h1>
-  <h2 style="font-size:64px; max-width:1350px;">Единая интеллектуальная платформа, которая <span class="grad">находит причины проблем</span> и координирует подразделения</h2>
-  <p class="lead" style="max-width:1150px;">Торговые представители, руководители, склад и бухгалтерия молочной компании — в одной системе. Не просто контроль, а своевременные решения.</p>
+  <h2 style="font-size:62px; max-width:1300px;">Находит, <span class="grad">почему падают продажи</span>, и отдаёт задачу тому, кто может это исправить</h2>
+  <p class="lead" style="max-width:1150px;">Платформа для молочных компаний, которая объединяет торговых представителей, склад, бухгалтерию и руководителей. Вместо отчётов «кто виноват» компания получает причину и исполнителя.</p>
   <div style="display:flex; gap:16px; margin-top:44px;">
-    <span class="pill glass">📱 Мобильный сайт представителя</span>
-    <span class="pill glass">💻 Веб-панель руководителя</span>
-    <span class="pill glass">✨ Аналитика и маршрутизация задач</span>
+    <span class="pill glass">✅ Работающий продукт онлайн</span>
+    <span class="pill glass">🧪 20 автотестов движка правил</span>
+    <span class="pill glass">🗓 6 месяцев до запуска</span>
   </div>
   <img class="phone" src="img/r-today.png" style="position:absolute; right:150px; top:150px; width:360px; transform: rotate(4deg);" />
-  <div class="foot"><span>Бизнес-кейс · 2026</span><span>1 / 8</span></div>
+  <div class="foot"><span>Хакатон · бизнес-кейс · 2026</span><span>1 / 10</span></div>
 </section>
 
-<!-- 2 -->
+<!-- 2. Problem -->
 <section class="s">
-  <div class="kicker">Ситуация</div>
-  <h2>Основные проблемы компании</h2>
-  <p class="lead">Пять проблем, которые сегодня решаются вручную, поздно и без понимания причин.</p>
-  <div class="grid" style="grid-template-columns: repeat(5, 1fr); margin-top: 56px;">
-    <div class="glass card"><div class="ic" style="background:var(--red)">📍</div><div class="num">01</div><h3>Пропущенные посещения</h3><p>Нет подтверждения, что представитель был в точке и сколько времени провёл.</p></div>
-    <div class="glass card"><div class="ic" style="background:var(--orange)">🎯</div><div class="num">02</div><h3>План выполняется на 50%</h3><p>План спускается «сверху» без учёта потенциала точки, долгов и поставок.</p></div>
-    <div class="glass card"><div class="ic" style="background:var(--indigo)">📉</div><div class="num">03</div><h3>Снижение продаж сотрудника</h3><p>Падение видно в конце месяца, причины не анализируются.</p></div>
-    <div class="glass card"><div class="ic" style="background:var(--teal)">🧊</div><div class="num">04</div><h3>Нет оборудования в магазине</h3><p>Морозильники компании пропадают без учёта и контроля.</p></div>
-    <div class="glass card"><div class="ic" style="background:var(--blue)">❄️</div><div class="num">05</div><h3>Морозильник без продаж</h3><p>Оборудование стоит, а продаж нет — и никто не знает почему.</p></div>
+  <div class="kicker">Проблема</div>
+  <h2>Деньги молочной компании теряются на полке, а видно это слишком поздно</h2>
+  <div class="grid" style="grid-template-columns: 1.05fr 1fr; gap:36px; margin-top:48px;">
+    <div class="glass card" style="padding:40px;">
+      <div class="big grad">50%</div>
+      <p style="font-size:26px; color:#fff; margin-top:14px;">выполнение плана продаж в компании из кейса</p>
+      <p style="font-size:21px;">План спускается «сверху» без учёта потенциала точки, долгов и сбоев поставок. Премии перестают мотивировать.</p>
+      <div style="height:1px; background:rgba(255,255,255,.1); margin:28px 0;"></div>
+      <p style="font-size:22px; color:#fff;">Молочка — особый товар:</p>
+      <p style="font-size:21px;">короткий срок годности, пустая полка = продажа ушла конкуренту сегодня же. Морозильники — капитальные вложения компании, стоящие в чужих магазинах.</p>
+    </div>
+    <div class="grid" style="gap:16px;">
+      <div class="glass card" style="padding:22px 28px; display:flex; gap:18px; align-items:center;"><div class="ic" style="background:var(--red); flex:none;">📍</div><div><b style="font-size:25px;">Пропущенные визиты</b><p style="font-size:19px; margin-top:4px;">Нет подтверждения, что представитель был в точке</p></div></div>
+      <div class="glass card" style="padding:22px 28px; display:flex; gap:18px; align-items:center;"><div class="ic" style="background:var(--indigo); flex:none;">📉</div><div><b style="font-size:25px;">Падение продаж без объяснения</b><p style="font-size:19px; margin-top:4px;">Видно в конце месяца, причина не ищется</p></div></div>
+      <div class="glass card" style="padding:22px 28px; display:flex; gap:18px; align-items:center;"><div class="ic" style="background:var(--teal); flex:none;">🧊</div><div><b style="font-size:25px;">Пропадающее оборудование</b><p style="font-size:19px; margin-top:4px;">Морозильники без учёта и фото-подтверждения</p></div></div>
+      <div class="glass card" style="padding:22px 28px; display:flex; gap:18px; align-items:center;"><div class="ic" style="background:var(--blue); flex:none;">❄️</div><div><b style="font-size:25px;">Морозильник стоит — продаж нет</b><p style="font-size:19px; margin-top:4px;">6 возможных причин, никто их не разбирает</p></div></div>
+    </div>
   </div>
-  <div class="glass" style="margin-top:36px; padding:28px 36px; font-size:26px; color:var(--l2);">Общий корень: <b style="color:#fff">данные разрознены между отделами</b>, а отклонения фиксируются как вина сотрудника, а не как задача для того, кто может её решить.</div>
-  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>2 / 8</span></div>
+  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>2 / 10</span></div>
 </section>
 
-<!-- 3 -->
+<!-- 3. Why existing solutions fail -->
 <section class="s">
-  <div class="kicker">Анализ</div>
-  <h2>Причины и последствия</h2>
-  <div class="glass" style="margin-top:44px; padding: 12px 40px;">
-    <table>
-      <tr style="color:var(--l3); font-size:20px;"><td>Проблема</td><td>Возможные причины</td><td>Последствия</td></tr>
-      <tr><td><b>Пропуски визитов</b></td><td style="color:var(--l2)">Перегруженный маршрут, нет контроля и отчётности</td><td style="color:var(--l2)">Пустые полки, потеря доверия точки</td></tr>
-      <tr><td><b>План 50%</b></td><td style="color:var(--l2)">Нереалистичный план, долги клиентов, задержки поставок</td><td style="color:var(--l2)">Демотивация, премии не работают</td></tr>
-      <tr><td><b>Падение продаж</b></td><td style="color:var(--l2)">Дефицит, конкуренты, цена, визиты — без разбора</td><td style="color:var(--l2)">Поздняя реакция, упущенная выручка</td></tr>
-      <tr><td><b>Нет оборудования</b></td><td style="color:var(--l2)">Нет единой базы, фото и привязки к точке</td><td style="color:var(--l2)">Прямые финансовые потери</td></tr>
-      <tr><td><b>Морозильник без продаж</b></td><td style="color:var(--l2)">Нет продукции, выкладка, спрос, цена, работа представителя, конкуренты</td><td style="color:var(--l2)">Оборудование не окупается</td></tr>
+  <div class="kicker">Почему это не решено</div>
+  <h2>Существующие инструменты фиксируют факты, но не находят причины</h2>
+  <div class="glass" style="margin-top:44px; padding: 10px 36px;">
+    <table class="mtx">
+      <tr style="color:var(--l3); font-size:19px;"><td></td><td>Excel + мессенджеры</td><td>Мобильная торговля на базе 1С</td><td>Глобальные SFA / retail execution</td><td style="color:#fff;">DairyHub</td></tr>
+      <tr><td>GPS-визиты и фотоотчёты</td><td class="no">—</td><td class="part">частично</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+      <tr><td>Заказы и остатки на полке</td><td class="part">вручную</td><td class="ok">✓</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+      <tr><td>Поиск причины отклонения по данным всех отделов</td><td class="no">—</td><td class="no">—</td><td class="part">аналитика без маршрутизации</td><td class="ok">✓</td></tr>
+      <tr><td>Задача складу и бухгалтерии с контролем срока</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="ok">✓</td></tr>
+      <tr><td>Программа «морозильник без продаж» и оценка переноса</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="ok">✓</td></tr>
+      <tr><td>Честная оценка: внешние сбои не снижают премию</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="ok">✓</td></tr>
+      <tr><td>Локальные требования РК (данные, 1С, язык)</td><td class="ok">✓</td><td class="ok">✓</td><td class="part">дорого адаптировать</td><td class="ok">✓</td></tr>
     </table>
   </div>
-  <p class="lead" style="margin-top:30px;">Вывод: компании нужна не ещё одна система контроля, а система, которая <b style="color:#fff">связывает факты и направляет задачу ответственному подразделению</b>.</p>
-  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>3 / 8</span></div>
+  <p class="lead" style="margin-top:22px; font-size:25px;">Сравнение по категориям решений. Наша позиция: <b style="color:#fff">не заменить учётную систему, а стать слоем решений поверх неё</b> — DairyHub берёт данные из 1С и превращает отклонения в задачи.</p>
+    <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>3 / 10</span></div>
 </section>
 
-<!-- 4 -->
+<!-- 4. Solution + insight -->
 <section class="s">
-  <div class="kicker">Решение</div>
-  <h2>Единое цифровое решение</h2>
-  <div class="grid" style="grid-template-columns: 1fr 1.25fr 1fr; margin-top:52px; align-items:center;">
-    <div class="grid" style="gap:18px;">
-      <div class="glass card" style="padding:24px 28px;"><b style="font-size:26px">📱 Торговый представитель</b><p style="font-size:20px">Маршрут, GPS-визит, отчёт, заказ</p></div>
-      <div class="glass card" style="padding:24px 28px;"><b style="font-size:26px">💻 Руководитель</b><p style="font-size:20px">Мониторинг, планы, решения</p></div>
-      <div class="glass card" style="padding:24px 28px;"><b style="font-size:26px">🚚 Склад · 💳 Бухгалтерия</b><p style="font-size:20px">Задачи с SLA 24 / 48 часов</p></div>
+  <div class="kicker">Решение и инсайт</div>
+  <h2>Падение продаж — часто проблема не представителя</h2>
+  <p class="lead">Задержка поставки, долг клиента, блокировка отгрузки, цена конкурента — причины находятся в разных отделах. DairyHub сводит их вместе.</p>
+  <div class="grid" style="grid-template-columns: 1fr 1.25fr 1fr; margin-top:44px; align-items:center;">
+    <div class="grid" style="gap:16px;">
+      <div class="glass card" style="padding:22px 26px;"><b style="font-size:25px">📱 Представитель</b><p style="font-size:19px">GPS-визит, полка, морозильник, фото, заказ</p></div>
+      <div class="glass card" style="padding:22px 26px;"><b style="font-size:25px">🗄 1С</b><p style="font-size:19px">Отгрузки, поставки, дебиторка</p></div>
+      <div class="glass card" style="padding:22px 26px;"><b style="font-size:25px">🌡 Датчики</b><p style="font-size:19px">Температура выбранных морозильников</p></div>
     </div>
-    <div class="glass" style="padding:44px; text-align:center; background: linear-gradient(180deg, rgba(10,132,255,.35), rgba(94,92,230,.18)), rgba(30,30,34,.5);">
-      <img src="img/icon.svg" style="width:96px; height:96px; border-radius:24px; margin:0 auto;" />
-      <div style="font-size:48px; font-weight:800; margin-top:18px;">DairyHub</div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:28px; font-size:21px;">
-        <div class="glass" style="padding:16px; border-radius:20px;">Движок правил</div>
-        <div class="glass" style="padding:16px; border-radius:20px;">Анализ причин</div>
-        <div class="glass" style="padding:16px; border-radius:20px;">Маршрутизация задач</div>
-        <div class="glass" style="padding:16px; border-radius:20px;">Уведомления</div>
+    <div class="glass" style="padding:40px; text-align:center; background: linear-gradient(180deg, rgba(10,132,255,.35), rgba(94,92,230,.18)), rgba(30,30,34,.5);">
+      <img src="img/icon.svg" style="width:88px; height:88px; border-radius:22px; margin:0 auto;" />
+      <div style="font-size:44px; font-weight:800; margin-top:16px;">DairyHub</div>
+      <div style="font-size:22px; color:var(--l2); margin-top:10px;">Обнаружить → проанализировать → назначить → проконтролировать</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:24px; font-size:20px;">
+        <div class="glass" style="padding:14px; border-radius:18px;">Сигнал при −30%</div>
+        <div class="glass" style="padding:14px; border-radius:18px;">Гипотезы с доказательствами</div>
+        <div class="glass" style="padding:14px; border-radius:18px;">Задача с SLA</div>
+        <div class="glass" style="padding:14px; border-radius:18px;">14 дней контроля</div>
       </div>
     </div>
-    <div class="grid" style="gap:18px;">
-      <div class="glass card" style="padding:24px 28px;"><b style="font-size:26px">🛰 GPS и геозона 150 м</b></div>
-      <div class="glass card" style="padding:24px 28px;"><b style="font-size:26px">📷 Фотоотчёты</b></div>
-      <div class="glass card" style="padding:24px 28px;"><b style="font-size:26px">🌡 Датчики температуры</b></div>
-      <div class="glass card" style="padding:24px 28px;"><b style="font-size:26px">🗄 1С: заказы, поставки, долги</b></div>
+    <div class="grid" style="gap:16px;">
+      <div class="glass card" style="padding:22px 26px;"><b style="font-size:25px">🚚 Склад</b><p style="font-size:19px">Задача за 24 часа</p></div>
+      <div class="glass card" style="padding:22px 26px;"><b style="font-size:25px">💳 Бухгалтерия</b><p style="font-size:19px">Задача за 48 часов</p></div>
+      <div class="glass card" style="padding:22px 26px;"><b style="font-size:25px">💻 Руководитель</b><p style="font-size:19px">Решения по цене, маршрутам, оборудованию</p></div>
     </div>
   </div>
-  <div class="glass" style="margin-top:40px; padding:26px 36px; font-size:26px;">🤝 Принцип: система показывает <b>возможные причины с доказательствами</b> и учитывает внешние факторы в оценке сотрудника — <span style="color:var(--l2)">помогает принимать решения, а не обвиняет.</span></div>
-  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>4 / 8</span></div>
+  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>4 / 10</span></div>
 </section>
 
-<!-- 5 -->
+<!-- 5. Product -->
 <section class="s">
   <div class="kicker">Продукт</div>
-  <h2>Функциональность приложения и веб-панели</h2>
+  <h2>Два интерфейса — одна система</h2>
   <div style="display:grid; grid-template-columns: 300px 1fr; gap:52px; margin-top:36px;">
-    <div>
-      <div class="phone" style="height:660px; overflow:hidden;"><img src="img/r-store.png" style="width:100%;" /></div>
-    </div>
+    <div class="phone" style="height:660px; overflow:hidden;"><img src="img/r-store.png" style="width:100%;" /></div>
     <div>
       <div class="shot" style="height:430px; overflow:hidden;"><img src="img/m-overview.png" style="width:100%; display:block;" /></div>
       <div class="grid" style="grid-template-columns:1fr 1fr; gap:22px; margin-top:24px; font-size:20px; color:var(--l2);">
-        <div class="glass card" style="padding:24px 28px;"><b style="color:#fff; font-size:24px;">Мобильный сайт</b><ul><li>Маршрут дня и карта точек</li><li>GPS-отметка, время визита</li><li>Наличие, оборудование, конкуренты, фото, заказ</li><li>Напоминания и задачи</li></ul></div>
-        <div class="glass card" style="padding:24px 28px;"><b style="color:#fff; font-size:24px;">Веб-панель</b><ul><li>Команда, планы и премии 80/100/120%</li><li>Аналитика: день / неделя / месяц</li><li>Оборудование, датчики, перенос</li><li>Контроль задач склада и бухгалтерии</li></ul></div>
+        <div class="glass card" style="padding:24px 28px;"><b style="color:#fff; font-size:24px;">Мобильный сайт представителя</b><ul><li>Маршрут, GPS-отметка, время визита</li><li>Полка, морозильник, конкуренты, фото</li><li>Рекомендованный заказ</li><li>Напоминания и задачи</li></ul></div>
+        <div class="glass card" style="padding:24px 28px;"><b style="color:#fff; font-size:24px;">Веб-панель руководителя</b><ul><li>Сигналы с причинами и исполнителями</li><li>Реалистичный план и премии 80/100/120%</li><li>Аналитика день / неделя / месяц</li><li>Оборудование, датчики, админка</li></ul></div>
       </div>
     </div>
   </div>
-  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>5 / 8</span></div>
+  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>5 / 10</span></div>
 </section>
 
-<!-- 6 -->
+<!-- 6. Demo case -->
 <section class="s">
-  <div class="kicker">Демонстрация</div>
-  <h2>Реальный сценарий: продажи кефира упали вдвое</h2>
+  <div class="kicker">Как это работает</div>
+  <h2>Продажи кефира упали вдвое — что делает DairyHub</h2>
   <div style="display:grid; grid-template-columns: repeat(11, auto); gap:10px; margin-top:40px; align-items:stretch;">
-    <div class="glass step"><div class="n">1</div><b>Обнаружение</b><span>≈ −50% за 7 дней к средней неделе</span></div><div class="arrow">›</div>
+    <div class="glass step"><div class="n">1</div><b>Сигнал</b><span>≈ −50% за 7 дней к средней неделе</span></div><div class="arrow">›</div>
     <div class="glass step"><div class="n">2</div><b>Анализ</b><span>Визиты, полка, поставки, долг, цена</span></div><div class="arrow">›</div>
     <div class="glass step"><div class="n">3</div><b>Причина</b><span>2 задержки и недогруз 55%</span></div><div class="arrow">›</div>
-    <div class="glass step"><div class="n">4</div><b>Задача</b><span>Складу, SLA 24 ч</span></div><div class="arrow">›</div>
-    <div class="glass step"><div class="n" style="background:var(--green)">5</div><b>Устранение</b><span>Внеочередная поставка</span></div><div class="arrow">›</div>
-    <div class="glass step"><div class="n" style="background:var(--green)">6</div><b>Контроль</b><span>14 дней мониторинга</span></div>
+    <div class="glass step"><div class="n">4</div><b>Задача</b><span>Складу, срок 24 ч</span></div><div class="arrow">›</div>
+    <div class="glass step"><div class="n" style="background:var(--green)">5</div><b>Решение</b><span>Внеочередная поставка</span></div><div class="arrow">›</div>
+    <div class="glass step"><div class="n" style="background:var(--green)">6</div><b>Контроль</b><span>14 дней до восстановления</span></div>
   </div>
   <div style="display:grid; grid-template-columns: 1240px 1fr; gap:36px; margin-top:36px;">
     <div style="height:440px; overflow:hidden; border-radius:22px;" class="shot"><img src="img/m-signal.png" style="width:100%; display:block;" /></div>
-    <div class="glass" style="padding:30px; font-size:22px; color:var(--l2); line-height:1.42; align-self:stretch;"><b style="color:#fff; font-size:26px; display:block; margin-bottom:12px;">Работает в демо</b>Склад отмечает выполнение задачи — сигнал автоматически переходит в «Контроль результата». Через 14 дней DairyHub проверит, восстановились ли продажи до 90% от базы, и закроет сигнал или вернёт его в работу.</div>
+    <div class="glass" style="padding:30px; font-size:22px; color:var(--l2); line-height:1.42;"><b style="color:#fff; font-size:26px; display:block; margin-bottom:12px;">Без DairyHub</b>руководитель узнаёт о падении в конце месяца и спрашивает с представителя.<br><br><b style="color:#fff; font-size:26px;">С DairyHub</b><br>склад получает задачу в тот же день, а представителя не наказывают за чужую ошибку.</div>
   </div>
-  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>6 / 8</span></div>
+  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>6 / 10</span></div>
 </section>
 
-<!-- 7 -->
+<!-- 7. Market + why now -->
 <section class="s">
-  <div class="kicker">Финансы и сроки</div>
-  <h2>30 млн ₸ · 6 месяцев</h2>
-  <div class="grid" style="grid-template-columns: 1.1fr 1fr; gap:36px; margin-top:40px;">
-    <div class="glass" style="padding: 18px 40px;">
+  <div class="kicker">Рынок и почему сейчас</div>
+  <h2>Отрасль растёт, а управление полкой осталось ручным</h2>
+  <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap:24px; margin-top:44px;">
+    <div class="glass card"><div class="big" style="font-size:80px;">~180</div><p style="font-size:22px; color:#fff;">молокоперерабатывающих предприятий в Казахстане</p><p style="font-size:18px;">Минсельхоз РК; по другим методикам — 145–182</p></div>
+    <div class="glass card"><div class="big" style="font-size:80px;">665<span style="font-size:40px;"> тыс. т</span></div><p style="font-size:22px; color:#fff;">молочной продукции в 2025 году, +7% к 2024</p><p style="font-size:18px;">максимум за десятилетие</p></div>
+    <div class="glass card"><div class="big" style="font-size:80px;">$256–302<span style="font-size:40px;"> млн</span></div><p style="font-size:22px; color:#fff;">мировой рынок retail execution ПО в 2024</p><p style="font-size:18px;">рост ~7% в год; оценки агентств расходятся</p></div>
+  </div>
+  <div class="grid" style="grid-template-columns: 1fr 1fr; gap:24px; margin-top:24px;">
+    <div class="glass card" style="padding:28px 32px;"><b style="font-size:26px;">Почему сейчас</b><ul style="font-size:21px; color:var(--l2); margin-top:8px;"><li>У каждого представителя есть смартфон с GPS и камерой</li><li>Датчики температуры стали дешёвыми и подключаемыми</li><li>12 инвестпроектов на 41 млрд ₸ расширяют переработку — растёт конкуренция за полку</li></ul></div>
+    <div class="glass card" style="padding:28px 32px;"><b style="font-size:26px;">Путь роста</b><ul style="font-size:21px; color:var(--l2); margin-top:8px; list-style:none; padding-left:0;"><li><b style="color:#fff">1.</b> Компания из кейса — пилот</li><li><b style="color:#fff">2.</b> Молочные производители и дистрибьюторы РК</li><li><b style="color:#fff">3.</b> Другие FMCG с полевыми командами и оборудованием: напитки, мороженое, хлеб</li><li><b style="color:#fff">4.</b> Центральная Азия</li></ul></div>
+  </div>
+  <div class="src">Источники: Минсельхоз РК via dairynews.today; milknet.biz (2025); eldala.kz; zakon.kz (02.2026); Kings Research, Verified Market Research (2024). Размер нашей доли рынка — гипотеза, проверяется после пилота.</div>
+  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>7 / 10</span></div>
+</section>
+
+<!-- 8. Business model -->
+<section class="s">
+  <div class="kicker">Бизнес-модель</div>
+  <h2>Подписка + внедрение + оборудование</h2>
+  <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap:24px; margin-top:48px;">
+    <div class="glass card"><div class="ic" style="background:var(--blue)">🔁</div><h3>Подписка SaaS</h3><p>Ежемесячная плата за пользователя: представители, руководители, офис. Основной повторяющийся доход.</p></div>
+    <div class="glass card"><div class="ic" style="background:var(--indigo)">🔌</div><h3>Внедрение</h3><p>Разовая интеграция с 1С, настройка правил под компанию, обучение команды.</p></div>
+    <div class="glass card"><div class="ic" style="background:var(--teal)">🌡</div><h3>Модуль датчиков</h3><p>Датчики температуры для выбранных морозильников и подписка на мониторинг.</p></div>
+  </div>
+  <div class="grid" style="grid-template-columns: 1fr 1fr; gap:24px; margin-top:24px;">
+    <div class="glass card" style="padding:28px 32px;"><b style="font-size:26px;">Ценность для клиента</b><ul style="font-size:21px; color:var(--l2); margin-top:8px;"><li>Меньше упущенной выручки из-за пустых полок и сбоев поставок</li><li>Морозильники под контролем: учёт, ремонт, перенос</li><li>Премии, которые снова мотивируют</li></ul></div>
+    <div class="glass card" style="padding:28px 32px;"><b style="font-size:26px;">Что проверим на пилоте</b><ul style="font-size:21px; color:var(--l2); margin-top:8px;"><li>Готовность платить и уровень цены за пользователя</li><li>Измеримый эффект на выполнение плана и визиты</li><li>Срок окупаемости для клиента</li></ul></div>
+  </div>
+  <div class="src">Цены не указаны намеренно: они будут определены по результатам пилота и интервью с клиентами, а не выдуманы заранее.</div>
+  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>8 / 10</span></div>
+</section>
+
+<!-- 9. Ask / plan -->
+<section class="s">
+  <div class="kicker">Запрос и план</div>
+  <h2>30 млн ₸ → за 6 месяцев от пилота до запуска</h2>
+  <div class="grid" style="grid-template-columns: 1.1fr 1fr; gap:36px; margin-top:36px;">
+    <div class="glass" style="padding: 14px 40px;">
       <table>
         <tr><td>Разработка сайта и приложения<div class="bar"><i style="width:100%"></i></div></td><td class="r">9 млн ₸</td></tr>
         <tr><td>GPS и интеграции<div class="bar"><i style="width:33%"></i></div></td><td class="r">3 млн ₸</td></tr>
@@ -182,51 +233,46 @@
         <tr><td>Тестирование и внедрение<div class="bar"><i style="width:33%"></i></div></td><td class="r">3 млн ₸</td></tr>
         <tr><td>Обучение и поддержка<div class="bar"><i style="width:22%"></i></div></td><td class="r">2 млн ₸</td></tr>
         <tr><td>Маркетинг и стимулирование продаж<div class="bar"><i style="width:22%"></i></div></td><td class="r">2 млн ₸</td></tr>
-        <tr><td style="color:var(--l2)">Запланировано · Резерв 16,7%</td><td class="r" style="color:var(--l2)">25 + 5 млн ₸</td></tr>
+        <tr><td style="color:var(--l2)">Запланировано 25 · резерв 5 (16,7%)</td><td class="r" style="color:var(--l2)">25 + 5</td></tr>
         <tr class="tot"><td>Итого</td><td class="r">30 млн ₸</td></tr>
       </table>
     </div>
     <div>
-      <div class="grid" style="grid-template-columns: 1fr 1fr; gap:16px;">
-        <div class="glass card" style="padding:22px 26px;"><div class="pill" style="background:rgba(10,132,255,.25); padding:4px 14px; font-size:18px;">Месяц 1</div><p style="color:#fff; font-size:21px;">Анализ требований, ТЗ</p></div>
-        <div class="glass card" style="padding:22px 26px;"><div class="pill" style="background:rgba(10,132,255,.25); padding:4px 14px; font-size:18px;">Месяц 2</div><p style="color:#fff; font-size:21px;">Мобильный сайт и веб-панель</p></div>
-        <div class="glass card" style="padding:22px 26px;"><div class="pill" style="background:rgba(10,132,255,.25); padding:4px 14px; font-size:18px;">Месяц 3</div><p style="color:#fff; font-size:21px;">БД, аналитика, уведомления</p></div>
-        <div class="glass card" style="padding:22px 26px;"><div class="pill" style="background:rgba(10,132,255,.25); padding:4px 14px; font-size:18px;">Месяц 4</div><p style="color:#fff; font-size:21px;">GPS и датчики, тестирование</p></div>
-        <div class="glass card" style="padding:22px 26px;"><div class="pill" style="background:rgba(48,209,88,.25); padding:4px 14px; font-size:18px;">Месяц 5</div><p style="color:#fff; font-size:21px;">Пилот и исправления</p></div>
-        <div class="glass card" style="padding:22px 26px;"><div class="pill" style="background:rgba(48,209,88,.25); padding:4px 14px; font-size:18px;">Месяц 6</div><p style="color:#fff; font-size:21px;">Обучение, полный запуск</p></div>
+      <div class="grid" style="grid-template-columns: 1fr 1fr; gap:14px;">
+        <div class="glass card" style="padding:18px 24px;"><span class="tag" style="background:rgba(10,132,255,.25);">М1</span><p style="color:#fff; font-size:20px;">Анализ, ТЗ</p></div>
+        <div class="glass card" style="padding:18px 24px;"><span class="tag" style="background:rgba(10,132,255,.25);">М2</span><p style="color:#fff; font-size:20px;">Мобильный сайт и панель</p></div>
+        <div class="glass card" style="padding:18px 24px;"><span class="tag" style="background:rgba(10,132,255,.25);">М3</span><p style="color:#fff; font-size:20px;">БД, аналитика, уведомления</p></div>
+        <div class="glass card" style="padding:18px 24px;"><span class="tag" style="background:rgba(10,132,255,.25);">М4</span><p style="color:#fff; font-size:20px;">GPS, датчики, тесты</p></div>
+        <div class="glass card" style="padding:18px 24px;"><span class="tag" style="background:rgba(48,209,88,.25);">М5</span><p style="color:#fff; font-size:20px;">Пилот, исправления</p></div>
+        <div class="glass card" style="padding:18px 24px;"><span class="tag" style="background:rgba(48,209,88,.25);">М6</span><p style="color:#fff; font-size:20px;">Обучение, запуск</p></div>
       </div>
-      <div class="glass card" style="margin-top:20px; padding:24px 28px;"><b style="font-size:26px;">2,05 млн ₸ — «Морозильник без продаж»</b><p style="font-size:20px;">Внутри 30 млн, не сверху. Предварительно: датчики 0,85 + выкладка и промо 1,0 + обучение 0,2.</p></div>
-      <p style="font-size:19px; color:var(--l3); margin-top:16px;">Модель предварительная — требует проверки коммерческими предложениями.</p>
+      <div class="glass card" style="margin-top:16px; padding:22px 26px;"><b style="font-size:24px;">2,05 млн ₸ — «Морозильник без продаж»</b><p style="font-size:19px;">Внутри 30 млн. Предварительно: датчики 0,85 + выкладка и промо 1,0 + обучение 0,2.</p></div>
+      <p style="font-size:18px; color:var(--l3); margin-top:14px;">Финансовая модель предварительная — проверяется коммерческими предложениями.</p>
     </div>
   </div>
-  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>7 / 8</span></div>
+  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>9 / 10</span></div>
 </section>
 
-<!-- 8 -->
+<!-- 10. Traction + close -->
 <section class="s">
-  <div class="kicker">Итог</div>
-  <h2>Ожидаемые результаты</h2>
-  <div class="grid" style="grid-template-columns: 1fr 1fr; gap:36px; margin-top:44px;">
+  <div class="kicker">Где мы сейчас</div>
+  <h2>Продукт уже работает. Пилот покажет эффект в цифрах.</h2>
+  <div class="grid" style="grid-template-columns: 1fr 1fr; gap:32px; margin-top:44px;">
     <div class="glass card">
-      <b style="font-size:28px;">Что даёт платформа</b>
-      <div class="grid" style="grid-template-columns:1fr 1fr; gap:14px 24px; margin-top:20px; font-size:23px;">
-        <div>✅ Контроль посещений</div><div>✅ Объективная оценка</div>
-        <div>✅ Раннее обнаружение проблем</div><div>✅ Связь подразделений</div>
-        <div>✅ Меньше потерь от задержек</div><div>✅ Контроль оборудования</div>
-        <div>✅ Эффективность точек</div><div>✅ Обоснованные решения</div>
-      </div>
+      <b style="font-size:28px;"><span class="dot" style="background:var(--green)"></span>&nbsp; Сделано</b>
+      <ul style="font-size:22px; color:var(--l2); margin-top:12px;"><li>Рабочая платформа онлайн: 5 ролей, регистрация компании, админка</li><li>Все 5 проблем кейса закрыты функциями, 8 сценариев в демо</li><li>Движок правил покрыт 20 автотестами</li><li>ТЗ, системный анализ, архитектура, план, тест-план</li></ul>
     </div>
     <div class="glass card">
-      <b style="font-size:28px;">Честно о цифрах</b>
-      <p style="font-size:22px;"><span class="dot" style="background:var(--green)"></span> <b style="color:#fff">Подтверждено:</b> бюджет 30 млн ₸, срок 6 месяцев, работающий прототип платформы.</p>
-      <p style="font-size:22px;"><span class="dot" style="background:var(--orange)"></span> <b style="color:#fff">Проверим на пилоте:</b> рост выполнения плана, доля выполненных визитов, скорость реакции подразделений — без заранее обещанных процентов.</p>
+      <b style="font-size:28px;"><span class="dot" style="background:var(--orange)"></span>&nbsp; Докажем на пилоте (месяц 5)</b>
+      <ul style="font-size:22px; color:var(--l2); margin-top:12px;"><li>Доля визитов, подтверждённых GPS</li><li>Время от отклонения до действия подразделения</li><li>Выполнение реалистичного плана</li><li>Доля морозильников, вернувшихся к продажам</li></ul>
+      <p style="font-size:19px; margin-top:14px;">Рост продаж не обещаем заранее — измеряем.</p>
     </div>
   </div>
-  <div class="glass" style="margin-top:36px; padding:40px 48px; display:flex; align-items:center; justify-content:space-between; background: linear-gradient(90deg, rgba(10,132,255,.35), rgba(94,92,230,.2)), rgba(30,30,34,.5);">
-    <div><div style="font-size:44px; font-weight:800; letter-spacing:-.03em;">DairyHub находит причины, а не виноватых.</div><div style="font-size:24px; color:var(--l2); margin-top:10px;">Демо: zhan01.github.io/dairyhub · пароль DairyHub2026</div></div>
+  <div class="glass" style="margin-top:34px; padding:38px 48px; display:flex; align-items:center; justify-content:space-between; background: linear-gradient(90deg, rgba(10,132,255,.35), rgba(94,92,230,.2)), rgba(30,30,34,.5);">
+    <div><div style="font-size:44px; font-weight:800; letter-spacing:-.03em;">DairyHub находит причины, а не виноватых.</div><div style="font-size:24px; color:var(--l2); margin-top:10px;">Попробуйте сейчас: zhan01.github.io/dairyhub · демо-пароль DairyHub2026</div></div>
     <img src="img/icon.svg" style="width:110px; height:110px; border-radius:28px;" />
   </div>
-  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>8 / 8</span></div>
+  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>10 / 10</span></div>
 </section>
 </body>
 </html>

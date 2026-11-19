@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>DairyHub — презентация</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..800&display=swap" rel="stylesheet" />
+<style>
+  @page { size: 1920px 1080px; margin: 0; }
+  :root { --blue:#0a84ff; --green:#30d158; --orange:#ff9f0a; --red:#ff453a; --indigo:#5e5ce6; --teal:#40c8e0; --purple:#bf5af2; --l2: rgba(235,235,245,.62); --l3: rgba(235,235,245,.32); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, 'SF Pro Display', 'Inter', sans-serif; color: #fff; background: #000; -webkit-font-smoothing: antialiased; letter-spacing: -.015em; }
+  .s { width: 1920px; height: 1080px; position: relative; overflow: hidden; page-break-after: always; padding: 96px 112px;
+       background: radial-gradient(1200px 800px at 0% -10%, rgba(10,132,255,.30), transparent 60%), radial-gradient(1000px 800px at 105% 0%, rgba(94,92,230,.24), transparent 60%), radial-gradient(1100px 900px at 60% 125%, rgba(48,176,199,.16), transparent 60%), #000; }
+  .s:last-child { page-break-after: auto; }
+  .kicker { font-size: 24px; font-weight: 600; color: var(--blue); text-transform: uppercase; letter-spacing: .08em; }
+  h1 { font-size: 132px; font-weight: 800; letter-spacing: -.045em; line-height: 1; }
+  h2 { font-size: 72px; font-weight: 750; letter-spacing: -.035em; line-height: 1.04; margin-top: 14px; }
+  .lead { font-size: 32px; color: var(--l2); line-height: 1.35; margin-top: 22px; max-width: 1300px; }
+  .grad { background: linear-gradient(90deg, #64b5ff, #8e8cff 50%, #5fe0f0); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .glass { background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04)), rgba(30,30,34,.5); border-radius: 32px; box-shadow: inset 0 1.5px 0 rgba(255,255,255,.24), inset 0 0 0 1px rgba(255,255,255,.1), 0 24px 60px rgba(0,0,0,.5); }
+  .grid { display: grid; gap: 28px; }
+  .ic { width: 64px; height: 64px; border-radius: 18px; display: grid; place-items: center; font-size: 32px; box-shadow: inset 0 1.5px 0 rgba(255,255,255,.35); }
+  .card { padding: 32px; }
+  .card h3 { font-size: 32px; font-weight: 700; margin-top: 18px; letter-spacing: -.02em; }
+  .card p { font-size: 22px; color: var(--l2); margin-top: 10px; line-height: 1.38; }
+  .num { font-size: 22px; color: var(--l3); font-weight: 600; margin-top: 18px; }
+  .foot { position: absolute; left: 112px; right: 112px; bottom: 44px; display: flex; justify-content: space-between; font-size: 18px; color: var(--l3); }
+  .logo { display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 22px; color: rgba(255,255,255,.75); }
+  .logo img { width: 30px; height: 30px; border-radius: 8px; }
+  .shot { border-radius: 22px; box-shadow: 0 0 0 1.5px rgba(255,255,255,.14), 0 40px 90px rgba(0,0,0,.7); display: block; }
+  .phone { border-radius: 58px; padding: 12px; background: linear-gradient(180deg,#48484a,#1c1c1e); box-shadow: inset 0 2px 0 rgba(255,255,255,.3), 0 40px 90px rgba(0,0,0,.8); }
+  .phone img { border-radius: 46px; display: block; }
+  table { width: 100%; border-collapse: collapse; font-size: 24px; }
+  td { padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.1); }
+  td.r { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tr.tot td { font-size: 30px; font-weight: 800; border-bottom: 0; padding-top: 20px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 999px; font-size: 20px; font-weight: 600; }
+  .bar { height: 10px; border-radius: 6px; background: rgba(118,118,128,.3); margin-top: 8px; overflow: hidden; }
+  .bar i { display: block; height: 100%; border-radius: 6px; background: linear-gradient(90deg,#0a84ff,#5e5ce6); }
+  .step { padding: 26px; }
+  .step .n { width: 46px; height: 46px; border-radius: 50%; background: var(--blue); display: grid; place-items: center; font-weight: 800; font-size: 22px; box-shadow: inset 0 1.5px 0 rgba(255,255,255,.4); }
+  .step b { display: block; font-size: 27px; margin-top: 16px; }
+  .step span { display: block; font-size: 20px; color: var(--l2); margin-top: 8px; line-height: 1.35; }
+  .arrow { color: var(--l3); font-size: 34px; display: grid; place-items: center; }
+  li { margin-top: 10px; }
+  ul { padding-left: 26px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+</style>
+</head>
+<body>
+
+<!-- 1 -->
+<section class="s" style="display:flex; flex-direction:column; justify-content:center;">
+  <div class="logo" style="position:absolute; top:72px; left:112px;"><img src="img/icon.svg" />DairyHub</div>
+  <div class="kicker">Цифровизация управления торговой командой</div>
+  <h1 style="margin-top:28px;">DairyHub</h1>
+  <h2 style="font-size:64px; max-width:1350px;">Единая интеллектуальная платформа, которая <span class="grad">находит причины проблем</span> и координирует подразделения</h2>
+  <p class="lead" style="max-width:1150px;">Торговые представители, руководители, склад и бухгалтерия молочной компании — в одной системе. Не просто контроль, а своевременные решения.</p>
+  <div style="display:flex; gap:16px; margin-top:44px;">
+    <span class="pill glass">📱 Мобильный сайт представителя</span>
+    <span class="pill glass">💻 Веб-панель руководителя</span>
+    <span class="pill glass">✨ Аналитика и маршрутизация задач</span>
+  </div>
+  <img class="phone" src="img/r-today.png" style="position:absolute; right:150px; top:150px; width:360px; transform: rotate(4deg);" />
+  <div class="foot"><span>Бизнес-кейс · 2026</span><span>1 / 8</span></div>
+</section>
+
+<!-- 2 -->
+<section class="s">
+  <div class="kicker">Ситуация</div>
+  <h2>Основные проблемы компании</h2>
+  <p class="lead">Пять проблем, которые сегодня решаются вручную, поздно и без понимания причин.</p>
+  <div class="grid" style="grid-template-columns: repeat(5, 1fr); margin-top: 56px;">
+    <div class="glass card"><div class="ic" style="background:var(--red)">📍</div><div class="num">01</div><h3>Пропущенные посещения</h3><p>Нет подтверждения, что представитель был в точке и сколько времени провёл.</p></div>
+    <div class="glass card"><div class="ic" style="background:var(--orange)">🎯</div><div class="num">02</div><h3>План выполняется на 50%</h3><p>План спускается «сверху» без учёта потенциала точки, долгов и поставок.</p></div>
+    <div class="glass card"><div class="ic" style="background:var(--indigo)">📉</div><div class="num">03</div><h3>Снижение продаж сотрудника</h3><p>Падение видно в конце месяца, причины не анализируются.</p></div>
+    <div class="glass card"><div class="ic" style="background:var(--teal)">🧊</div><div class="num">04</div><h3>Нет оборудования в магазине</h3><p>Морозильники компании пропадают без учёта и контроля.</p></div>
+    <div class="glass card"><div class="ic" style="background:var(--blue)">❄️</div><div class="num">05</div><h3>Морозильник без продаж</h3><p>Оборудование стоит, а продаж нет — и никто не знает почему.</p></div>
+  </div>
+  <div class="glass" style="margin-top:36px; padding:28px 36px; font-size:26px; color:var(--l2);">Общий корень: <b style="color:#fff">данные разрознены между отделами</b>, а отклонения фиксируются как вина сотрудника, а не как задача для того, кто может её решить.</div>
+  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>2 / 8</span></div>
+</section>
+
+<!-- 3 -->
+<section class="s">
+  <div class="kicker">Анализ</div>
+  <h2>Причины и последствия</h2>
+  <div class="glass" style="margin-top:44px; padding: 12px 40px;">
+    <table>
+      <tr style="color:var(--l3); font-size:20px;"><td>Проблема</td><td>Возможные причины</td><td>Последствия</td></tr>
+      <tr><td><b>Пропуски визитов</b></td><td style="color:var(--l2)">Перегруженный маршрут, нет контроля и отчётности</td><td style="color:var(--l2)">Пустые полки, потеря доверия точки</td></tr>
+      <tr><td><b>План 50%</b></td><td style="color:var(--l2)">Нереалистичный план, долги клиентов, задержки поставок</td><td style="color:var(--l2)">Демотивация, премии не работают</td></tr>
+      <tr><td><b>Падение продаж</b></td><td style="color:var(--l2)">Дефицит, конкуренты, цена, визиты — без разбора</td><td style="color:var(--l2)">Поздняя реакция, упущенная выручка</td></tr>
+      <tr><td><b>Нет оборудования</b></td><td style="color:var(--l2)">Нет единой базы, фото и привязки к точке</td><td style="color:var(--l2)">Прямые финансовые потери</td></tr>
+      <tr><td><b>Морозильник без продаж</b></td><td style="color:var(--l2)">Нет продукции, выкладка, спрос, цена, работа представителя, конкуренты</td><td style="color:var(--l2)">Оборудование не окупается</td></tr>
+    </table>
+  </div>
+  <p class="lead" style="margin-top:30px;">Вывод: компании нужна не ещё одна система контроля, а система, которая <b style="color:#fff">связывает факты и направляет задачу ответственному подразделению</b>.</p>
+  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>3 / 8</span></div>
+</section>
+
+<!-- 4 -->
+<section class="s">
+  <div class="kicker">Решение</div>
+  <h2>Единое цифровое решение</h2>
+  <div class="grid" style="grid-template-columns: 1fr 1.25fr 1fr; margin-top:52px; align-items:center;">
+    <div class="grid" style="gap:18px;">
+      <div class="glass card" style="padding:24px 28px;"><b style="font-size:26px">📱 Торговый представитель</b><p style="font-size:20px">Маршрут, GPS-визит, отчёт, заказ</p></div>
+      <div class="glass card" style="padding:24px 28px;"><b style="font-size:26px">💻 Руководитель</b><p style="font-size:20px">Мониторинг, планы, решения</p></div>
+      <div class="glass card" style="padding:24px 28px;"><b style="font-size:26px">🚚 Склад · 💳 Бухгалтерия</b><p style="font-size:20px">Задачи с SLA 24 / 48 часов</p></div>
+    </div>
+    <div class="glass" style="padding:44px; text-align:center; background: linear-gradient(180deg, rgba(10,132,255,.35), rgba(94,92,230,.18)), rgba(30,30,34,.5);">
+      <img src="img/icon.svg" style="width:96px; height:96px; border-radius:24px; margin:0 auto;" />
+      <div style="font-size:48px; font-weight:800; margin-top:18px;">DairyHub</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:28px; font-size:21px;">
+        <div class="glass" style="padding:16px; border-radius:20px;">Движок правил</div>
+        <div class="glass" style="padding:16px; border-radius:20px;">Анализ причин</div>
+        <div class="glass" style="padding:16px; border-radius:20px;">Маршрутизация задач</div>
+        <div class="glass" style="padding:16px; border-radius:20px;">Уведомления</div>
+      </div>
+    </div>
+    <div class="grid" style="gap:18px;">
+      <div class="glass card" style="padding:24px 28px;"><b style="font-size:26px">🛰 GPS и геозона 150 м</b></div>
+      <div class="glass card" style="padding:24px 28px;"><b style="font-size:26px">📷 Фотоотчёты</b></div>
+      <div class="glass card" style="padding:24px 28px;"><b style="font-size:26px">🌡 Датчики температуры</b></div>
+      <div class="glass card" style="padding:24px 28px;"><b style="font-size:26px">🗄 1С: заказы, поставки, долги</b></div>
+    </div>
+  </div>
+  <div class="glass" style="margin-top:40px; padding:26px 36px; font-size:26px;">🤝 Принцип: система показывает <b>возможные причины с доказательствами</b> и учитывает внешние факторы в оценке сотрудника — <span style="color:var(--l2)">помогает принимать решения, а не обвиняет.</span></div>
+  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>4 / 8</span></div>
+</section>
+
+<!-- 5 -->
+<section class="s">
+  <div class="kicker">Продукт</div>
+  <h2>Функциональность приложения и веб-панели</h2>
+  <div style="display:grid; grid-template-columns: 300px 1fr; gap:52px; margin-top:36px;">
+    <div>
+      <div class="phone" style="height:660px; overflow:hidden;"><img src="img/r-store.png" style="width:100%;" /></div>
+    </div>
+    <div>
+      <div class="shot" style="height:430px; overflow:hidden;"><img src="img/m-overview.png" style="width:100%; display:block;" /></div>
+      <div class="grid" style="grid-template-columns:1fr 1fr; gap:22px; margin-top:24px; font-size:20px; color:var(--l2);">
+        <div class="glass card" style="padding:24px 28px;"><b style="color:#fff; font-size:24px;">Мобильный сайт</b><ul><li>Маршрут дня и карта точек</li><li>GPS-отметка, время визита</li><li>Наличие, оборудование, конкуренты, фото, заказ</li><li>Напоминания и задачи</li></ul></div>
+        <div class="glass card" style="padding:24px 28px;"><b style="color:#fff; font-size:24px;">Веб-панель</b><ul><li>Команда, планы и премии 80/100/120%</li><li>Аналитика: день / неделя / месяц</li><li>Оборудование, датчики, перенос</li><li>Контроль задач склада и бухгалтерии</li></ul></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>5 / 8</span></div>
+</section>
+
+<!-- 6 -->
+<section class="s">
+  <div class="kicker">Демонстрация</div>
+  <h2>Реальный сценарий: продажи кефира упали вдвое</h2>
+  <div style="display:grid; grid-template-columns: repeat(11, auto); gap:10px; margin-top:40px; align-items:stretch;">
+    <div class="glass step"><div class="n">1</div><b>Обнаружение</b><span>≈ −50% за 7 дней к средней неделе</span></div><div class="arrow">›</div>
+    <div class="glass step"><div class="n">2</div><b>Анализ</b><span>Визиты, полка, поставки, долг, цена</span></div><div class="arrow">›</div>
+    <div class="glass step"><div class="n">3</div><b>Причина</b><span>2 задержки и недогруз 55%</span></div><div class="arrow">›</div>
+    <div class="glass step"><div class="n">4</div><b>Задача</b><span>Складу, SLA 24 ч</span></div><div class="arrow">›</div>
+    <div class="glass step"><div class="n" style="background:var(--green)">5</div><b>Устранение</b><span>Внеочередная поставка</span></div><div class="arrow">›</div>
+    <div class="glass step"><div class="n" style="background:var(--green)">6</div><b>Контроль</b><span>14 дней мониторинга</span></div>
+  </div>
+  <div style="display:grid; grid-template-columns: 1240px 1fr; gap:36px; margin-top:36px;">
+    <div style="height:440px; overflow:hidden; border-radius:22px;" class="shot"><img src="img/m-signal.png" style="width:100%; display:block;" /></div>
+    <div class="glass" style="padding:30px; font-size:22px; color:var(--l2); line-height:1.42; align-self:stretch;"><b style="color:#fff; font-size:26px; display:block; margin-bottom:12px;">Работает в демо</b>Склад отмечает выполнение задачи — сигнал автоматически переходит в «Контроль результата». Через 14 дней DairyHub проверит, восстановились ли продажи до 90% от базы, и закроет сигнал или вернёт его в работу.</div>
+  </div>
+  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>6 / 8</span></div>
+</section>
+
+<!-- 7 -->
+<section class="s">
+  <div class="kicker">Финансы и сроки</div>
+  <h2>30 млн ₸ · 6 месяцев</h2>
+  <div class="grid" style="grid-template-columns: 1.1fr 1fr; gap:36px; margin-top:40px;">
+    <div class="glass" style="padding: 18px 40px;">
+      <table>
+        <tr><td>Разработка сайта и приложения<div class="bar"><i style="width:100%"></i></div></td><td class="r">9 млн ₸</td></tr>
+        <tr><td>GPS и интеграции<div class="bar"><i style="width:33%"></i></div></td><td class="r">3 млн ₸</td></tr>
+        <tr><td>Датчики и оборудование<div class="bar"><i style="width:44%"></i></div></td><td class="r">4 млн ₸</td></tr>
+        <tr><td>Серверы и безопасность<div class="bar"><i style="width:22%"></i></div></td><td class="r">2 млн ₸</td></tr>
+        <tr><td>Тестирование и внедрение<div class="bar"><i style="width:33%"></i></div></td><td class="r">3 млн ₸</td></tr>
+        <tr><td>Обучение и поддержка<div class="bar"><i style="width:22%"></i></div></td><td class="r">2 млн ₸</td></tr>
+        <tr><td>Маркетинг и стимулирование продаж<div class="bar"><i style="width:22%"></i></div></td><td class="r">2 млн ₸</td></tr>
+        <tr><td style="color:var(--l2)">Запланировано · Резерв 16,7%</td><td class="r" style="color:var(--l2)">25 + 5 млн ₸</td></tr>
+        <tr class="tot"><td>Итого</td><td class="r">30 млн ₸</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="grid" style="grid-template-columns: 1fr 1fr; gap:16px;">
+        <div class="glass card" style="padding:22px 26px;"><div class="pill" style="background:rgba(10,132,255,.25); padding:4px 14px; font-size:18px;">Месяц 1</div><p style="color:#fff; font-size:21px;">Анализ требований, ТЗ</p></div>
+        <div class="glass card" style="padding:22px 26px;"><div class="pill" style="background:rgba(10,132,255,.25); padding:4px 14px; font-size:18px;">Месяц 2</div><p style="color:#fff; font-size:21px;">Мобильный сайт и веб-панель</p></div>
+        <div class="glass card" style="padding:22px 26px;"><div class="pill" style="background:rgba(10,132,255,.25); padding:4px 14px; font-size:18px;">Месяц 3</div><p style="color:#fff; font-size:21px;">БД, аналитика, уведомления</p></div>
+        <div class="glass card" style="padding:22px 26px;"><div class="pill" style="background:rgba(10,132,255,.25); padding:4px 14px; font-size:18px;">Месяц 4</div><p style="color:#fff; font-size:21px;">GPS и датчики, тестирование</p></div>
+        <div class="glass card" style="padding:22px 26px;"><div class="pill" style="background:rgba(48,209,88,.25); padding:4px 14px; font-size:18px;">Месяц 5</div><p style="color:#fff; font-size:21px;">Пилот и исправления</p></div>
+        <div class="glass card" style="padding:22px 26px;"><div class="pill" style="background:rgba(48,209,88,.25); padding:4px 14px; font-size:18px;">Месяц 6</div><p style="color:#fff; font-size:21px;">Обучение, полный запуск</p></div>
+      </div>
+      <div class="glass card" style="margin-top:20px; padding:24px 28px;"><b style="font-size:26px;">2,05 млн ₸ — «Морозильник без продаж»</b><p style="font-size:20px;">Внутри 30 млн, не сверху. Предварительно: датчики 0,85 + выкладка и промо 1,0 + обучение 0,2.</p></div>
+      <p style="font-size:19px; color:var(--l3); margin-top:16px;">Модель предварительная — требует проверки коммерческими предложениями.</p>
+    </div>
+  </div>
+  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>7 / 8</span></div>
+</section>
+
+<!-- 8 -->
+<section class="s">
+  <div class="kicker">Итог</div>
+  <h2>Ожидаемые результаты</h2>
+  <div class="grid" style="grid-template-columns: 1fr 1fr; gap:36px; margin-top:44px;">
+    <div class="glass card">
+      <b style="font-size:28px;">Что даёт платформа</b>
+      <div class="grid" style="grid-template-columns:1fr 1fr; gap:14px 24px; margin-top:20px; font-size:23px;">
+        <div>✅ Контроль посещений</div><div>✅ Объективная оценка</div>
+        <div>✅ Раннее обнаружение проблем</div><div>✅ Связь подразделений</div>
+        <div>✅ Меньше потерь от задержек</div><div>✅ Контроль оборудования</div>
+        <div>✅ Эффективность точек</div><div>✅ Обоснованные решения</div>
+      </div>
+    </div>
+    <div class="glass card">
+      <b style="font-size:28px;">Честно о цифрах</b>
+      <p style="font-size:22px;"><span class="dot" style="background:var(--green)"></span> <b style="color:#fff">Подтверждено:</b> бюджет 30 млн ₸, срок 6 месяцев, работающий прототип платформы.</p>
+      <p style="font-size:22px;"><span class="dot" style="background:var(--orange)"></span> <b style="color:#fff">Проверим на пилоте:</b> рост выполнения плана, доля выполненных визитов, скорость реакции подразделений — без заранее обещанных процентов.</p>
+    </div>
+  </div>
+  <div class="glass" style="margin-top:36px; padding:40px 48px; display:flex; align-items:center; justify-content:space-between; background: linear-gradient(90deg, rgba(10,132,255,.35), rgba(94,92,230,.2)), rgba(30,30,34,.5);">
+    <div><div style="font-size:44px; font-weight:800; letter-spacing:-.03em;">DairyHub находит причины, а не виноватых.</div><div style="font-size:24px; color:var(--l2); margin-top:10px;">Демо: zhan01.github.io/dairyhub · пароль DairyHub2026</div></div>
+    <img src="img/icon.svg" style="width:110px; height:110px; border-radius:28px;" />
+  </div>
+  <div class="foot"><div class="logo"><img src="img/icon.svg" />DairyHub</div><span>8 / 8</span></div>
+</section>
+</body>
+</html>
