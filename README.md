@@ -12,6 +12,7 @@
 | [`docs/`](docs/README.md) | Концепция, ТЗ (бизнес-аналитик), системный анализ, архитектура, план проекта и бюджет, план тестирования |
 | [`app/`](app) | Веб-приложение (React + TypeScript + Vite): лендинг, регистрация/вход, веб-панель, мобильное приложение представителя, администрирование |
 | [`presentation/`](presentation) | Исходник презентации; PDF — [`DairyHub-presentation.pdf`](DairyHub-presentation.pdf) |
+| [`guide/`](guide) | Инструкция пользователя со скриншотами; PDF — [`DairyHub-instrukciya.pdf`](DairyHub-instrukciya.pdf) |
 
 ## Демо-реализация
 

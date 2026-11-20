@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>DairyHub — инструкция пользователя</title>
+<style>
+@page { size: A4; margin: 0; }
+:root { --ink:#1d1d1f; --sec:#6e6e73; --line:#e5e5ea; --blue:#0a84ff; --bg:#f5f5f7; }
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; }
+body { font-family: -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif; color: var(--ink); font-size: 11.5pt; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.page { width: 210mm; min-height: 297mm; padding: 18mm 17mm 16mm; page-break-after: always; position: relative; }
+.page:last-child { page-break-after: auto; }
+.cover { background: radial-gradient(120% 80% at 20% 0%, #12305e 0%, #05070d 60%) ; color:#fff; display:flex; flex-direction:column; justify-content:space-between; padding: 26mm 20mm; height: 297mm; }
+.cover h1 { font-size: 40pt; line-height:1.05; margin: 0 0 10px; letter-spacing:-0.02em; }
+.cover .sub { font-size: 15pt; color: #c7c7cc; max-width: 140mm; }
+.logo { display:flex; align-items:center; gap:12px; font-size:20pt; font-weight:700; }
+.logo i { width:44px; height:44px; border-radius:12px; background: linear-gradient(160deg,#2b8cff,#0a5bd8); display:inline-block; }
+.cover .meta { font-size: 11pt; color:#a1a1a6; line-height:1.8; }
+.cover .meta b { color:#fff; font-weight:600; }
+h2 { font-size: 22pt; letter-spacing:-0.01em; margin: 0 0 4px; }
+h2 .n { color: var(--blue); margin-right: 8px; }
+.lead { color: var(--sec); font-size: 12pt; margin: 0 0 14px; }
+h3 { font-size: 13.5pt; margin: 18px 0 6px; }
+p { margin: 6px 0; }
+ol, ul { margin: 6px 0; padding-left: 20px; }
+li { margin: 3px 0; }
+fig, figure { margin: 10px 0 12px; }
+figure img { max-width: 100%; max-height: 92mm; margin: 0 auto; border-radius: 10px; border: 1px solid var(--line); display:block; }
+figcaption { font-size: 9.5pt; color: var(--sec); margin-top: 5px; }
+.phones { display:flex; gap: 9mm; margin: 10px 0 12px; justify-content:center; }
+.phones figure { flex: 0 0 46mm; margin: 0; }
+.phones.sm { gap: 12mm; }
+.phones.sm figure { flex: 0 0 37mm; }
+.phones.xs figure { flex: 0 0 33mm; }
+.phones img { border-radius: 16px; }
+.note { background: #eef5ff; border-left: 3px solid var(--blue); padding: 9px 12px; border-radius: 6px; font-size: 10.5pt; margin: 10px 0; }
+.warn { background: #fff6e5; border-left: 3px solid #ff9f0a; padding: 9px 12px; border-radius: 6px; font-size: 10.5pt; margin: 10px 0; }
+table { width:100%; border-collapse: collapse; font-size: 10.5pt; margin: 8px 0; }
+th, td { text-align:left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--sec); font-weight: 600; font-size: 9.5pt; text-transform: uppercase; letter-spacing: .03em; }
+code { font-family: "SF Mono", Menlo, monospace; font-size: 10pt; background: var(--bg); padding: 1px 5px; border-radius: 4px; }
+.toc { columns: 2; column-gap: 12mm; font-size: 11.5pt; }
+.toc div { break-inside: avoid; padding: 5px 0; border-bottom: 1px solid var(--line); display:flex; justify-content: space-between; }
+.toc span { color: var(--sec); }
+.foot { position:absolute; bottom: 9mm; left: 17mm; right: 17mm; font-size: 8.5pt; color: #aeaeb2; display:flex; justify-content:space-between; }
+.two { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tag { display:inline-block; font-size: 9pt; padding: 1px 8px; border-radius: 10px; background: var(--bg); color: var(--sec); margin-right: 4px; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<section class="page cover">
+  <div class="logo"><i></i>DairyHub</div>
+  <div>
+    <h1>Инструкция пользователя</h1>
+    <div class="sub">Как работать в системе торговому представителю, руководителю, складу, бухгалтерии и администратору — по шагам, с экранами.</div>
+  </div>
+  <div class="meta">
+    Адрес системы: <b>https://zhan01.github.io/dairyhub/</b><br>
+    Резервный адрес: <b>https://dairyhub-kz.vercel.app</b><br>
+    Демо-пароль для всех ролей: <b>DairyHub2026</b><br>
+    Версия: ноябрь 2026 · демонстрационная версия
+  </div>
+</section>
+
+<!-- TOC -->
+<section class="page">
+  <h2>Содержание</h2>
+  <p class="lead">Разделы сгруппированы по ролям. Каждый сотрудник видит только те разделы, которые нужны для его работы.</p>
+  <div class="toc">
+    <div>1. Что такое DairyHub</div>
+    <div>2. Вход и регистрация</div>
+    <div>3. Представитель: экран «Сегодня»</div>
+    <div>4. Представитель: рабочая смена и GPS</div>
+    <div>5. Представитель: визит в точку</div>
+    <div>6. Представитель: точки, задачи, уведомления</div>
+    <div>7. Руководитель: обзор</div>
+    <div>8. Руководитель: сигналы</div>
+    <div>9. Руководитель: задачи</div>
+    <div>10. Руководитель: команда и GPS-трек</div>
+    <div>11. Руководитель: торговые точки</div>
+    <div>12. Руководитель: аналитика</div>
+    <div>13. Руководитель: планы и премии</div>
+    <div>14. Оборудование (морозильники)</div>
+    <div>15. Склад: поставки и задачи</div>
+    <div>16. Бухгалтерия: дебиторка</div>
+    <div>17. Администратор</div>
+    <div>18. Профиль и уведомления</div>
+    <div>19. Где хранятся данные</div>
+    <div>20. Частые вопросы</div>
+  </div>
+
+  <h3>Роли и доступ</h3>
+  <table>
+    <tr><th>Роль</th><th>Устройство</th><th>Что видит</th></tr>
+    <tr><td><b>Торговый представитель</b></td><td>Телефон</td><td>Маршрут на день, визиты, смена с GPS, свои точки, задачи, уведомления, свой план</td></tr>
+    <tr><td><b>Руководитель</b></td><td>Компьютер</td><td>Все сигналы и задачи, команда, точки, аналитика, планы, оборудование, поставки, дебиторка</td></tr>
+    <tr><td><b>Склад</b></td><td>Компьютер</td><td>Задачи склада, сигналы по поставкам, поставки, оборудование</td></tr>
+    <tr><td><b>Бухгалтерия</b></td><td>Компьютер</td><td>Задачи бухгалтерии, сигналы по задолженности, дебиторка</td></tr>
+    <tr><td><b>Администратор</b></td><td>Компьютер</td><td>Всё, что видит руководитель, плюс пользователи, приглашения, справочники, правила, журнал</td></tr>
+  </table>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>2</span></div>
+</section>
+
+<!-- 1 -->
+<section class="page">
+  <h2><span class="n">1</span>Что такое DairyHub</h2>
+  <p class="lead">Платформа для отдела продаж молочной компании. Она не только фиксирует работу, но и сама находит отклонения, предлагает вероятные причины и передаёт задачу тому подразделению, которое может её решить.</p>
+  <h3>Как устроен цикл</h3>
+  <ol>
+    <li><b>Данные.</b> Представитель отмечает визит по GPS, заполняет наличие на полке, проверяет морозильник, фотографирует, оформляет заказ. Продажи, поставки, задолженность и температура морозильников поступают в систему.</li>
+    <li><b>Сигнал.</b> Каждый день DairyHub сравнивает показатели с нормой. Например, продажи точки за 7 дней упали больше чем на 30 % к среднему за 4 недели, морозильник не найден на месте, температура выше −15 °C дольше 2 часов.</li>
+    <li><b>Гипотеза.</b> К сигналу система добавляет вероятные причины с учётом фактов: были ли задержки поставок, заблокирована ли отгрузка из-за долга, пропускались ли визиты.</li>
+    <li><b>Задача.</b> Под каждую причину создаётся задача с ответственным подразделением и сроком (SLA): склад, бухгалтерия, представитель или руководитель.</li>
+    <li><b>Контроль.</b> После закрытия задач сигнал 14 дней остаётся «на контроле». Если продажи восстановились, сигнал закрывается автоматически.</li>
+  </ol>
+  <figure><img src="shots/01-landing.jpg"><figcaption>Главная страница. Отсюда — вход, регистрация компании и демо-доступ.</figcaption></figure>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>3</span></div>
+</section>
+
+<!-- 2 -->
+<section class="page">
+  <h2><span class="n">2</span>Вход и регистрация</h2>
+  <p class="lead">Учётные записи корпоративные: компанию регистрирует администратор, сотрудники присоединяются по коду приглашения.</p>
+  <h3>Вход сотрудника</h3>
+  <ol>
+    <li>Откройте адрес системы и нажмите «Войти».</li>
+    <li>Введите рабочий e-mail и пароль. Отметьте «Запомнить меня на 30 дней» на личном устройстве; без отметки сессия действует 12 часов.</li>
+    <li>Система откроет нужный раздел сама: представителя — на мобильном экране «Сегодня», остальных — в веб-панели.</li>
+  </ol>
+  <div class="warn">После 5 неверных попыток вход блокируется на 15 минут. Забыли пароль — обратитесь к администратору: он выдаст временный, и система попросит сменить его при входе.</div>
+  <div class="two">
+    <figure><img src="shots/02-login.jpg"><figcaption>Вход в веб-панель</figcaption></figure>
+    <figure><img src="shots/03-register.jpg"><figcaption>Регистрация: новая компания или вход по коду приглашения</figcaption></figure>
+  </div>
+  <h3>Регистрация</h3>
+  <ul>
+    <li><b>Новая компания.</b> Укажите название компании, своё имя, e-mail и пароль (не менее 8 символов, буквы и цифры). Первый пользователь становится администратором.</li>
+    <li><b>По приглашению.</b> Введите код, который выдал администратор. Роль уже задана в коде, срок действия — 7 дней.</li>
+  </ul>
+  <h3>Демо-доступ</h3>
+  <p>На странице входа есть кнопки демо-ролей: руководитель, представитель, склад, бухгалтерия, администратор. Пароль всех демо-записей — <code>DairyHub2026</code>. Демо-данные обновляются каждый день.</p>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>4</span></div>
+</section>
+
+<!-- 3 -->
+<section class="page">
+  <h2><span class="n">3</span>Представитель: экран «Сегодня»</h2>
+  <p class="lead">Главный экран представителя на телефоне. Всё, что нужно на день, — на одном экране.</p>
+  <div class="phones">
+    <figure><img src="shots/04-login-mobile.jpg"><figcaption>Вход с телефона</figcaption></figure>
+    <figure><img src="shots/10-rep-today.jpg"><figcaption>Экран «Сегодня»</figcaption></figure>
+    <figure><img src="shots/17-rep-me.jpg"><figcaption>Профиль и план</figcaption></figure>
+  </div>
+  <h3>Что на экране</h3>
+  <ul>
+    <li><b>Рабочая смена</b> — кнопка «Начать» запускает запись GPS-трека (раздел 4).</li>
+    <li><b>Кольца плана</b> — прогноз выполнения месячного плана и уровень премии: 80 %, 100 %, 120 %.</li>
+    <li><b>Сигналы и задачи</b> — что DairyHub просит проверить в точках сегодня.</li>
+    <li><b>Маршрут</b> — точки на сегодня по порядку и счётчик выполненных визитов.</li>
+    <li><b>Нижняя панель</b> — Сегодня, Точки, Задачи, Входящие, Профиль.</li>
+  </ul>
+  <div class="note">Сайт можно добавить на главный экран телефона: в Safari — «Поделиться → На экран Домой», в Chrome — «Добавить на главный экран». Он будет открываться как приложение.</div>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>5</span></div>
+</section>
+
+<!-- 4 -->
+<section class="page">
+  <h2><span class="n">4</span>Рабочая смена и GPS-трек</h2>
+  <p class="lead">GPS записывается только во время смены — между «Начать» и «Завершить». Вне смены координаты не собираются.</p>
+  <div class="phones sm">
+    <figure><img src="shots/10-rep-today.jpg"><figcaption>До начала смены</figcaption></figure>
+    <figure><img src="shots/18-rep-shift.jpg"><figcaption>Смена идёт: пробег, время, точек GPS</figcaption></figure>
+  </div>
+  <h3>Как работать</h3>
+  <ol>
+    <li>Утром на экране «Сегодня» нажмите <b>«Начать»</b> в карточке «Рабочая смена».</li>
+    <li>Разрешите браузеру доступ к геолокации — запрос появится один раз.</li>
+    <li>В течение дня держите вкладку DairyHub открытой. Пока смена идёт, экран телефона не гаснет.</li>
+    <li>В конце дня нажмите <b>«Завершить»</b>.</li>
+  </ol>
+  <div class="warn"><b>Важно.</b> Браузер пишет GPS, только пока вкладка DairyHub на экране. Если свернуть браузер или заблокировать телефон, запись приостановится и продолжится при возвращении. На треке этот участок будет прямой линией.</div>
+  <h3>Демо-GPS</h3>
+  <p>Переключатель «Демо-GPS» имитирует движение по маршруту. Он нужен для показа системы вне Алматы. Такие смены и визиты помечаются «Демо-GPS» и видны руководителю.</p>
+  <h3>Напоминания</h3>
+  <ul>
+    <li>В 18:00 приходит «Итоги дня» — сколько визитов выполнено и какие отчёты не заполнены.</li>
+    <li>Если задача просрочена, уведомление получают исполнитель и руководитель.</li>
+  </ul>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>6</span></div>
+</section>
+
+<!-- 5 -->
+<section class="page">
+  <h2><span class="n">5</span>Визит в торговую точку</h2>
+  <p class="lead">Визит состоит из отметки о прибытии и шести шагов отчёта. Время и координаты фиксируются автоматически и не редактируются.</p>
+  <div class="phones">
+    <figure><img src="shots/19-rep-route-store.jpg"><figcaption>1. Точка из маршрута → «Начать визит»</figcaption></figure>
+    <figure><img src="shots/20-visit-checkin.jpg"><figcaption>2. Отметка: карта и геозона точки</figcaption></figure>
+    <figure><img src="shots/21-visit-checkin-demo.jpg"><figcaption>3. «Вы в геозоне» → «Отметиться»</figcaption></figure>
+  </div>
+  <h3>Отметка о прибытии</h3>
+  <ol>
+    <li>В маршруте нажмите на точку и затем <b>«Начать визит»</b>.</li>
+    <li>Система определит местоположение и покажет расстояние до точки. Радиус геозоны настраивает администратор.</li>
+    <li>Если вы в геозоне — нажмите <b>«Отметиться и начать визит»</b>.</li>
+    <li>Если вне геозоны — укажите причину (например, точка переехала). Отметка сохранится с пометкой, руководитель её увидит.</li>
+  </ol>
+  <div class="note">Если появилось «Доступ к геолокации запрещён», разрешите геолокацию для сайта в настройках браузера и обновите страницу.</div>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>7</span></div>
+</section>
+
+<section class="page">
+  <h2><span class="n">5</span>Визит: шаги отчёта</h2>
+  <div class="phones sm xs">
+    <figure><img src="shots/22-visit-stock.jpg"><figcaption>Шаг 1. Наличие на полке</figcaption></figure>
+    <figure><img src="shots/23-visit-equipment.jpg"><figcaption>Шаг 2. Оборудование</figcaption></figure>
+    <figure><img src="shots/24-visit-competitors.jpg"><figcaption>Шаг 3. Конкуренты и цены</figcaption></figure>
+  </div>
+  <ol>
+    <li><b>Наличие.</b> По каждому товару: «Есть», «Мало» или «Нет». Кнопка «Всё есть» отмечает всё сразу.</li>
+    <li><b>Оборудование.</b> Подтвердите, что морозильник на месте и работает, укажите заполненность и есть ли в нём чужой товар, сделайте фото и нажмите «Подтвердить».</li>
+    <li><b>Конкуренты.</b> Отметьте активность конкурентов и соотношение наших цен с ценами конкурента.</li>
+  </ol>
+  <div class="phones sm xs">
+    <figure><img src="shots/25-visit-photo.jpg"><figcaption>Шаг 4. Фотоотчёт</figcaption></figure>
+    <figure><img src="shots/26-visit-order.jpg"><figcaption>Шаг 5. Заказ</figcaption></figure>
+    <figure><img src="shots/27-visit-summary.jpg"><figcaption>Шаг 6. Итог и завершение</figcaption></figure>
+  </div>
+  <ol start="4">
+    <li><b>Фото.</b> Полка, морозильник, ценники. На фото автоматически ставятся дата и время.</li>
+    <li><b>Заказ.</b> Кнопка «Рекомендованный» подставит количество по продажам точки; его можно изменить.</li>
+    <li><b>Итог.</b> Проверьте отчёт, добавьте комментарий и завершите визит. Без полного отчёта DairyHub напомнит его заполнить; визит короче 5 минут помечается «коротким».</li>
+  </ol>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>8</span></div>
+</section>
+
+<!-- 6 -->
+<section class="page">
+  <h2><span class="n">6</span>Точки, задачи, уведомления</h2>
+  <div class="phones sm">
+    <figure><img src="shots/12-rep-stores.jpg"><figcaption>Мои точки: карта и изменение продаж</figcaption></figure>
+    <figure><img src="shots/13-rep-store.jpg"><figcaption>Карточка точки</figcaption></figure>
+    <figure><img src="shots/15-rep-signal.jpg"><figcaption>Сигнал с подсказками по причинам</figcaption></figure>
+  </div>
+  <ul>
+    <li><b>Точки</b> — все закреплённые точки на карте и списком, с изменением продаж за неделю. В карточке — оборудование, последний визит, кнопка внепланового визита.</li>
+    <li><b>Сигнал</b> — что не так в точке и возможные причины. Это подсказка, а не оценка работы: если причина другая, напишите об этом в комментарии к задаче.</li>
+  </ul>
+  <div class="phones sm">
+    <figure><img src="shots/14-rep-tasks.jpg"><figcaption>Задачи представителя</figcaption></figure>
+    <figure><img src="shots/16-rep-inbox.jpg"><figcaption>Входящие уведомления</figcaption></figure>
+  </div>
+  <ul>
+    <li><b>Задачи</b> — что поручено вам: от DairyHub или руководителя, со сроком. В задаче можно оставить комментарий, приложить фото, отметить выполнение или нажать «Причина не подтвердилась».</li>
+    <li><b>Входящие</b> — уведомления о новых сигналах, задачах и напоминания. «Прочитать все» снимает отметки.</li>
+  </ul>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>9</span></div>
+</section>
+
+<!-- 7 -->
+<section class="page">
+  <h2><span class="n">7</span>Руководитель: обзор</h2>
+  <p class="lead">Веб-панель открывается на компьютере. Слева — меню разделов, вверху — колокольчик уведомлений и выход.</p>
+  <figure><img src="shots/30-m-overview.jpg"><figcaption>Обзор: выполнение визитов, выручка, задачи, выполнение плана, приоритетные сигналы и команда</figcaption></figure>
+  <h3>С чего начинать день</h3>
+  <ol>
+    <li>Посмотрите блок <b>приоритетных сигналов</b> — что требует решения сегодня.</li>
+    <li>Проверьте <b>просроченные задачи</b>: у каждой есть ответственное подразделение и срок.</li>
+    <li>Оцените <b>команду</b>: выполнение визитов и плана по каждому представителю. Строка открывает карточку сотрудника.</li>
+  </ol>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>10</span></div>
+</section>
+
+<!-- 8 -->
+<section class="page">
+  <h2><span class="n">8</span>Сигналы</h2>
+  <p class="lead">Отклонения, которые DairyHub нашёл автоматически, с вероятными причинами и ответственными.</p>
+  <figure><img src="shots/31-m-signals.jpg"><figcaption>Список сигналов: фильтры по статусу и типу, поиск, выгрузка в Excel</figcaption></figure>
+  <h3>Типы сигналов</h3>
+  <table>
+    <tr><th>Сигнал</th><th>Когда появляется</th></tr>
+    <tr><td>Снижение продаж в точке</td><td>Продажи за 7 дней ниже среднего за 4 недели больше чем на 30 %</td></tr>
+    <tr><td>Снижение продаж сотрудника</td><td>То же по всем точкам представителя</td></tr>
+    <tr><td>Пропущенный визит</td><td>Плановый визит не подтверждён GPS-отметкой</td></tr>
+    <tr><td>Оборудование отсутствует</td><td>Представитель не нашёл морозильник на месте</td></tr>
+    <tr><td>Температура вне нормы</td><td>Выше −15 °C дольше 2 часов при норме не выше −18 °C</td></tr>
+    <tr><td>Морозильник без продаж</td><td>Морозильник стоит, а мороженое не продаётся несколько дней</td></tr>
+  </table>
+  <p>Статусы: <span class="tag">Новый</span><span class="tag">В работе</span><span class="tag">На контроле</span><span class="tag">Закрыт</span>. Пороги настраивает администратор в разделе «Правила».</p>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>11</span></div>
+</section>
+
+<section class="page">
+  <h2><span class="n">8</span>Карточка сигнала</h2>
+  <figure><img src="shots/32-m-signal.jpg"><figcaption>Верх карточки: что произошло, график продаж, связанные точки и задачи</figcaption></figure>
+  <figure><img src="shots/33-m-signal-2.jpg"><figcaption>Возможные причины с фактами и история действий</figcaption></figure>
+  <ul>
+    <li>Каждая причина подкреплена фактами из данных: задержки поставок, блокировка отгрузки, пропуски визитов.</li>
+    <li>По каждой причине создана задача ответственному подразделению. Можно добавить свою задачу.</li>
+    <li>Если все причины отклонены исполнителями, сигнал возвращается руководителю на повторный разбор.</li>
+  </ul>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>12</span></div>
+</section>
+
+<!-- 9 -->
+<section class="page">
+  <h2><span class="n">9</span>Задачи</h2>
+  <p class="lead">Межотдельные задачи, созданные DairyHub и руководителями, с контролем сроков.</p>
+  <figure><img src="shots/34-m-tasks.jpg"><figcaption>Список задач: группы по срокам, выгрузка в Excel, кнопка «Новая задача»</figcaption></figure>
+  <h3>Жизненный цикл задачи</h3>
+  <ol>
+    <li>Задача создаётся автоматически по сигналу или вручную кнопкой <b>«Новая задача»</b>.</li>
+    <li>Исполнитель видит её у себя, комментирует, прикладывает фото.</li>
+    <li>Итог — <b>«Выполнено»</b> или <b>«Причина не подтвердилась»</b> с комментарием.</li>
+    <li>После просрочки срока исполнитель и руководитель получают по одному уведомлению.</li>
+  </ol>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>13</span></div>
+</section>
+
+<!-- 10 -->
+<section class="page">
+  <h2><span class="n">10</span>Команда и GPS-трек</h2>
+  <figure><img src="shots/35-m-team.jpg"><figcaption>Команда: карта сотрудников на смене и таблица показателей</figcaption></figure>
+  <p>В разделе «Команда» вверху — карта: где сейчас находятся сотрудники, начавшие смену. Ниже — выполнение визитов, плана, средняя длительность визита по каждому. Строка открывает карточку сотрудника.</p>
+  <figure><img src="shots/37-m-rep.jpg"><figcaption>Карточка сотрудника: продажи, визиты, выполнение плана</figcaption></figure>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>14</span></div>
+</section>
+
+<section class="page">
+  <h2><span class="n">10</span>GPS-трек смены</h2>
+  <figure><img src="shots/38-m-rep-track.jpg"><figcaption>Трек за выбранный день: пробег, время смены, остановки, визиты на карте</figcaption></figure>
+  <ul>
+    <li>Выберите день — доступны последние 7 дней.</li>
+    <li>Синяя линия — маршрут, зелёные метки — выполненные визиты, красные — пропущенные.</li>
+    <li>Под картой — визиты дня со временем и расстоянием от точки при отметке.</li>
+    <li>Отдельно показываются <b>остановки вне торговых точек</b> дольше 8 минут.</li>
+    <li>Кнопка <b>Excel</b> выгружает трек.</li>
+  </ul>
+  <div class="note">Пробег не учитывает GPS-дрожание меньше 15 м и невозможные скачки быстрее 150 км/ч.</div>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>15</span></div>
+</section>
+
+<!-- 11 -->
+<section class="page">
+  <h2><span class="n">11</span>Торговые точки</h2>
+  <figure><img src="shots/39-m-stores.jpg"><figcaption>Все точки: фильтры, карта, таблица с продажами и выгрузкой в Excel</figcaption></figure>
+  <figure><img src="shots/40-m-store.jpg"><figcaption>Карточка точки: продажи за 28 дней, план, расположение, оборудование, дни визитов</figcaption></figure>
+  <p>В карточке точки руководитель меняет <b>дни визитов</b>: маршрут представителя перестроится автоматически.</p>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>16</span></div>
+</section>
+
+<!-- 12 -->
+<section class="page">
+  <h2><span class="n">12</span>Аналитика продаж</h2>
+  <figure><img src="shots/41-m-analytics.jpg"><figcaption>Аналитика: период День / Неделя / Месяц, фильтр по сотруднику</figcaption></figure>
+  <ul>
+    <li>Выручка за период и сравнение с предыдущим.</li>
+    <li>Динамика за 12 недель, выручка по категориям точек A, B, C.</li>
+    <li>Продажи по сотрудникам и выполнение визитов за 14 дней.</li>
+    <li>Таблица по товарам с выгрузкой в Excel.</li>
+    <li>Точки с наибольшим снижением и ростом — нажатие открывает карточку точки.</li>
+  </ul>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>17</span></div>
+</section>
+
+<!-- 13 -->
+<section class="page">
+  <h2><span class="n">13</span>Планы и премии</h2>
+  <figure><img src="shots/42-m-plans.jpg"><figcaption>Сравнение плана «сверху» и реалистичного плана, система премирования</figcaption></figure>
+  <h3>Как считается реалистичный план</h3>
+  <p>План точки = средние продажи за 3 месяца × сезонность × коэффициент категории (A, B, C). Коэффициенты и сезонность настраивает руководитель.</p>
+  <h3>Действия</h3>
+  <ul>
+    <li><b>Утвердить план месяца</b> — фиксирует план; автор и время сохраняются.</li>
+    <li><b>Изменить</b> в строке точки — корректировка плана с обязательным основанием. Запись попадает в журнал аудита.</li>
+    <li><b>Скорректированное выполнение</b> исключает потери по вине поставок и блокировок: сотрудник не теряет премию из-за чужих задержек.</li>
+  </ul>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>18</span></div>
+</section>
+
+<section class="page">
+  <h2><span class="n">13</span>Выполнение и причины невыполнения</h2>
+  <figure><img src="shots/43-m-plans-2.jpg"><figcaption>Выполнение по сотрудникам и точкам, уровни премий, причины невыполнения</figcaption></figure>
+  <p>Блок «Причины невыполнения» показывает, сколько выручки упущено с начала месяца и по какой вероятной причине: поставки, задолженность, визиты. Это ориентир для разбора, а не бухгалтерская величина.</p>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>19</span></div>
+</section>
+
+<!-- 14 -->
+<section class="page">
+  <h2><span class="n">14</span>Оборудование (морозильники)</h2>
+  <figure><img src="shots/44-m-equipment.jpg"><figcaption>Реестр морозильников: статусы, точки, последняя проверка</figcaption></figure>
+  <figure><img src="shots/45-m-freezer.jpg"><figcaption>Карточка морозильника: продажи, температура, история проверок</figcaption></figure>
+  <p>Программа по морозильникам идёт в 4 этапа: диагностика причин → устранение → перемещение в точку с потенциалом → контроль. При «нет продаж» DairyHub запускает этап 1 и ставит задачу представителю.</p>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>20</span></div>
+</section>
+
+<!-- 15 -->
+<section class="page">
+  <h2><span class="n">15</span>Склад: поставки и задачи</h2>
+  <figure><img src="shots/50-w-overview.jpg"><figcaption>Обзор склада: свои задачи и сигналы по поставкам</figcaption></figure>
+  <figure><img src="shots/52-w-task.jpg"><figcaption>Задача складу: основание, срок, комментарий, итог</figcaption></figure>
+  <p>Сотрудник склада видит задачи своего подразделения. Например, «Задержки и недогрузы поставок» по точке, где упали продажи. Откройте задачу, проверьте отгрузки, напишите комментарий и отметьте «Выполнено» или «Причина не подтвердилась».</p>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>21</span></div>
+</section>
+
+<section class="page">
+  <h2><span class="n">15</span>Поставки</h2>
+  <figure><img src="shots/46-m-deliveries.jpg"><figcaption>Поставки за 14 дней: доля «вовремя и полностью», уровень исполнения, проблемные отгрузки</figcaption></figure>
+  <h2 style="margin-top:20px"><span class="n">16</span>Бухгалтерия: дебиторка</h2>
+  <figure><img src="shots/54-a-debts.jpg"><figcaption>Дебиторская задолженность: сумма, просрочка, блокировка отгрузок</figcaption></figure>
+  <p>Если отгрузки точке заблокированы из-за просроченного долга, а продажи падают, бухгалтерия получает задачу. Её решение снимает причину падения.</p>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>22</span></div>
+</section>
+
+<!-- 17 -->
+<section class="page">
+  <h2><span class="n">17</span>Администратор: пользователи</h2>
+  <figure><img src="shots/60-admin-users.jpg"><figcaption>Пользователи компании: роли, статус, последний вход</figcaption></figure>
+  <ul>
+    <li><b>Изменить роль</b>, <b>заблокировать / разблокировать</b>, <b>сбросить пароль</b> — система выдаст временный пароль.</li>
+    <li><b>Войти как пользователь</b> — просмотр системы глазами сотрудника для поддержки. Действие записывается в журнал.</li>
+    <li>Последнего активного администратора нельзя понизить или заблокировать.</li>
+  </ul>
+  <figure><img src="shots/61-admin-invites.jpg"><figcaption>Приглашения: код с ролью, срок 7 дней, отзыв</figcaption></figure>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>23</span></div>
+</section>
+
+<section class="page">
+  <h2><span class="n">17</span>Справочники и правила</h2>
+  <figure><img src="shots/62-admin-dirs.jpg"><figcaption>Справочники: цены товаров, добавление новой точки с координатами и категорией</figcaption></figure>
+  <figure><img src="shots/63-admin-rules.jpg"><figcaption>Правила: пороги сигналов, сроки SLA, радиус геозоны</figcaption></figure>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>24</span></div>
+</section>
+
+<section class="page">
+  <h2><span class="n">17</span>Журнал и компания</h2>
+  <figure><img src="shots/64-admin-audit.jpg"><figcaption>Журнал аудита: кто, что и когда сделал; выгрузка в Excel</figcaption></figure>
+  <figure><img src="shots/65-admin-company.jpg"><figcaption>Компания: название, параметры безопасности, пересоздание демо-данных</figcaption></figure>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>25</span></div>
+</section>
+
+<!-- 18 -->
+<section class="page">
+  <h2><span class="n">18</span>Профиль и уведомления</h2>
+  <figure><img src="shots/48-m-profile.jpg"><figcaption>Профиль: смена пароля, каналы уведомлений, выход</figcaption></figure>
+  <ul>
+    <li><b>Смена пароля</b> — не менее 8 символов, буквы и цифры.</li>
+    <li><b>Уведомления в приложении</b> включены всегда: критичные сигналы нельзя отключить.</li>
+    <li><b>Уведомления браузера</b> — всплывающие сообщения на телефоне или компьютере, пока сайт открыт.</li>
+    <li><b>Telegram и SMS</b> — помечены «Промышленная версия», работают после подключения сервера.</li>
+  </ul>
+
+  <h2 style="margin-top:22px"><span class="n">19</span>Где хранятся данные</h2>
+  <p><b>В демо-версии</b> база данных находится в браузере устройства (IndexedDB). Система полноценно записывает визиты, фото, GPS-треки, сигналы, задачи, уведомления и журнал аудита, и они сохраняются после закрытия браузера.</p>
+  <div class="warn">Ограничение демо: данные не передаются между устройствами. Визит, сделанный на телефоне, руководитель увидит только на этом же телефоне. Для работы команды нужна серверная база данных — она входит в промышленную версию вместе с хранением персональных данных на территории РК.</div>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>26</span></div>
+</section>
+
+<!-- 20 -->
+<section class="page">
+  <h2><span class="n">20</span>Частые вопросы</h2>
+  <h3>Не определяется местоположение</h3>
+  <p>Разрешите геолокацию для сайта в настройках браузера, включите GPS на телефоне, выйдите на открытое место. При точности хуже 100 м система предупредит.</p>
+  <h3>Отметился не в той точке</h3>
+  <p>Время и координаты не редактируются. Напишите комментарий в итоге визита — руководитель увидит его.</p>
+  <h3>Пропала часть трека</h3>
+  <p>Браузер не записывает GPS, если вкладка свёрнута или телефон заблокирован. Держите DairyHub открытым во время смены.</p>
+  <h3>Не согласен с причиной в сигнале</h3>
+  <p>Нажмите в задаче «Причина не подтвердилась» и опишите, что на самом деле. Если все причины отклонены, сигнал вернётся руководителю.</p>
+  <h3>Работа без интернета</h3>
+  <p>Ранее открытая система запускается без сети, вверху появляется оранжевый баннер «Нет сети — работа продолжается». Данные сохраняются на устройстве.</p>
+  <h3>Забыл пароль</h3>
+  <p>Обратитесь к администратору компании — он выдаст временный пароль.</p>
+  <h3>Как выгрузить данные</h3>
+  <p>Кнопка <b>Excel</b> есть в разделах Сигналы, Задачи, Команда, Точки, Аналитика, Планы, Журнал и в GPS-треке.</p>
+  <div class="foot"><span>DairyHub · Инструкция пользователя</span><span>27</span></div>
+</section>
+
+</body>
+</html>

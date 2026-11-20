@@ -54,6 +54,7 @@ export function Landing() {
         <div className="row gap8 mt32" style={{ justifyContent: 'center', flexWrap: 'wrap' }}>
           <Link className="btn primary lg" to={appLink}>Открыть демо</Link>
           <a className="btn lg" href="./DairyHub-presentation.pdf" target="_blank" rel="noreferrer"><Icon name="doc" size={18} />Презентация (PDF)</a>
+          <a className="btn lg" href="./DairyHub-instrukciya.pdf" target="_blank" rel="noreferrer"><Icon name="doc" size={18} />Инструкция (PDF)</a>
         </div>
         <div className="row gap8 mt16" style={{ justifyContent: 'center', flexWrap: 'wrap' }}>
           <Link className="btn sm" to="/login?demo=manager">Демо: руководитель</Link>
